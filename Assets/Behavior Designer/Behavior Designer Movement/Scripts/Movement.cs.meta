@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1b7d848585dc1fb4ea7b235e94d12ad3
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Scripts/Movement.cs
+  uploadId: 738179

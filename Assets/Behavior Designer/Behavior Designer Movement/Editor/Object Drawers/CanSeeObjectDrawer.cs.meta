@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a560770d74de9a943b5527e20701b7ab
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Editor/Object Drawers/CanSeeObjectDrawer.cs
+  uploadId: 738179

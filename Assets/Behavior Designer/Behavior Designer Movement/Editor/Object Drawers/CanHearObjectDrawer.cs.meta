@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 603d4f11848f29347befbe8e892043c2
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Editor/Object Drawers/CanHearObjectDrawer.cs
+  uploadId: 738179

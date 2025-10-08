@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a7a72b4f9944218408cef162756c9bef
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Editor/Object Drawers/WithinDistanceDrawer.cs
+  uploadId: 738179

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1768192494c2b914ebb1d2660aaa6320
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 28980
+  packageName: Behavior Designer - Formations Pack
+  packageVersion: 1.2.2
+  assetPath: Assets/Behavior Designer/Behavior Designer Formations/Scripts/Tasks/V.cs
+  uploadId: 737460

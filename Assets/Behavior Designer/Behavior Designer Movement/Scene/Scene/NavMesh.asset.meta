@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b8dd84a32b65e0f41a6c7f12ff72f7e6
+timeCreated: 1462401859
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Scene/Scene/NavMesh.asset
+  uploadId: 738179
