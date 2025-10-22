@@ -8,7 +8,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 
 /*
-Préparer un terrain où toutes les terrasses sont accessibles
+Prï¿½parer un terrain oï¿½ toutes les terrasses sont accessibles
 */
 
 public abstract class ArmyManager : MonoBehaviour
@@ -33,10 +33,50 @@ public abstract class ArmyManager : MonoBehaviour
     public GameObject GetRandomEnemy<T>(Vector3 centerPos, float minRadius, float maxRadius) where T : ArmyElement
     {
         var enemies = GetAllEnemiesOfType<T>(true).Where(
-            item=>  Vector3.Distance(centerPos,item.transform.position)>minRadius
+            item => Vector3.Distance(centerPos, item.transform.position) > minRadius
                     && Vector3.Distance(centerPos, item.transform.position) < maxRadius);
 
         return enemies.FirstOrDefault()?.gameObject;
+    }
+    
+    	    public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
+    {
+        GameObject closest = null;
+        float minDist = Mathf.Infinity;
+
+        foreach (var enemy in GetAllEnemiesOfType<ArmyElement>(false))
+        {
+            float dist = Vector3.Distance(fromPosition, enemy.transform.position);
+            if (dist >= minRadius && dist <= maxRadius && dist < minDist)
+            {
+                minDist = dist;
+                closest = enemy.gameObject;
+            }
+        }
+
+        return closest;
+    }
+
+    // --- SYSTÃˆME DE FOCUS SUR ENNEMI ---
+    private Dictionary<IArmyElement, GameObject> currentTarget = new Dictionary<IArmyElement, GameObject>();
+
+    public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius)
+    {
+
+        if (currentTarget.ContainsKey(self) && currentTarget[self] != null)
+            return currentTarget[self];
+
+        GameObject newTarget = GetClosestEnemyAny(fromPosition, minRadius, maxRadius);
+        if (newTarget != null)
+            currentTarget[self] = newTarget;
+
+        return newTarget;
+    }
+
+    public void UnlockTarget(IArmyElement self)
+    {
+        if (currentTarget.ContainsKey(self))
+            currentTarget.Remove(self);
     }
 
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
@@ -49,7 +89,7 @@ public abstract class ArmyManager : MonoBehaviour
     // Start is called before the first frame update
     public virtual IEnumerator Start()
     {
-        yield return null; // on attend une frame que tous les objets aient été instanciés ...
+        yield return null; // on attend une frame que tous les objets aient ï¿½tï¿½ instanciï¿½s ...
 
         GameObject[] allArmiesElements = GameObject.FindGameObjectsWithTag(m_ArmyTag);
         foreach (var item in allArmiesElements)
