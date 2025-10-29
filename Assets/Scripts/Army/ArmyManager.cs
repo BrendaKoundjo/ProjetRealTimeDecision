@@ -14,6 +14,7 @@ Pr�parer un terrain o� toutes les terrasses sont accessibles
 public abstract class ArmyManager : MonoBehaviour
 {
     [SerializeField] string m_ArmyTag;
+    public string ArmyTag => m_ArmyTag;
     [SerializeField] Color m_ArmyColor;
     protected List<IArmyElement> m_ArmyElements = new List<IArmyElement>();
 
@@ -39,7 +40,7 @@ public abstract class ArmyManager : MonoBehaviour
         return enemies.FirstOrDefault()?.gameObject;
     }
     
-    	    public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
+    public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
     {
         GameObject closest = null;
         float minDist = Mathf.Infinity;

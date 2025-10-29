@@ -27,6 +27,7 @@ public class Drone : ArmyElement,IShoot
 			newMissileGO.tag = gameObject.tag;
 			Missile missile = newMissileGO.GetComponent<Missile>();
 			missile.SetStartSpeed(m_NavMeshAgent.speed);
+			missile.OwnerArmyTag = this.ArmyManager.ArmyTag;
 		}
 	}
 

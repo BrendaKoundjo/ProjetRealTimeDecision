@@ -8,6 +8,7 @@ public class Missile : MonoBehaviour
     [SerializeField] float m_Acceleration;
     [SerializeField] float m_TranslationMaxSpeed;
     float m_TranslationSpeed;
+    public string OwnerArmyTag; 
     
     Rigidbody m_Rigidbody;
     Transform m_Transform;
