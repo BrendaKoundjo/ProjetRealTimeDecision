@@ -16,7 +16,8 @@ public class EvasiveManeuver : Action
     NavMeshAgent agent;
     bool isDodging = false;
     bool onCooldown = false;
-
+    public SharedBool isDodgingShared;
+    
     IArmyElement armyElement;
 
     public override void OnAwake()
@@ -82,11 +83,12 @@ public class EvasiveManeuver : Action
     IEnumerator PerformDodge(Transform threat)
     {
         isDodging = true;
-
+        bool prevUpdateRotation = agent.updateRotation;
+       
         Vector3 dodgeDir = Vector3.Cross((threat.position - transform.position).normalized, Vector3.up).normalized;
         Vector3 left = transform.position + dodgeDir * dodgeDistance.Value;
         Vector3 right = transform.position - dodgeDir * dodgeDistance.Value;
-
+        Vector3 back = transform.position - (threat.position - transform.position).normalized * dodgeDistance.Value;
         Vector3 chosen = left;
         if (NavMesh.SamplePosition(left, out NavMeshHit hitLeft, 1f, NavMesh.AllAreas))
         {
@@ -97,6 +99,11 @@ public class EvasiveManeuver : Action
         {
             chosen = hitRight.position;
             Debug.Log("[EvasiveManeuver] Esquive côté DROITE");
+        }
+        else if (NavMesh.SamplePosition(back, out NavMeshHit hitBack, 1f, NavMesh.AllAreas))
+        {
+         chosen = hitBack.position;
+         Debug.LogWarning("[EvasiveManeuver] Esquive de SECOURS vers l'ARRIÈRE !");
         }
         else
         {
@@ -111,6 +118,9 @@ public class EvasiveManeuver : Action
         yield return new WaitForSeconds(dodgeDuration.Value);
 
         isDodging = false;
+        if (isDodgingShared != null) isDodgingShared.Value = false;
+        agent.updateRotation = prevUpdateRotation;
+        
         onCooldown = true;
         Debug.Log("[EvasiveManeuver] Fin esquive -> cooldown...");
         yield return new WaitForSeconds(dodgeCooldown.Value);
