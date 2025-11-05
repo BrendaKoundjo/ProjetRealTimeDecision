@@ -33,4 +33,16 @@ public class Health : MonoBehaviour
 
 		if (m_Health == 0 && m_OnDieEvent != null) m_OnDieEvent.Invoke();
 	}
+
+	 public void Heal(float amount)
+    {
+        if (m_Health <= 0) return; 
+        m_Health = Mathf.Min(m_Health + amount, m_StartHealth);
+        RefreshHealthDisplay();
+    }
+
+    public float GetHealthRatio()
+    {
+        return m_Health / m_StartHealth;
+    }
 }

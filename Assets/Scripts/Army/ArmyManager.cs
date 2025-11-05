@@ -58,7 +58,7 @@ public abstract class ArmyManager : MonoBehaviour
         return closest;
     }
 
-    // --- SYSTÈME DE FOCUS SUR ENNEMI ---
+ 
     private Dictionary<IArmyElement, GameObject> currentTarget = new Dictionary<IArmyElement, GameObject>();
 
     public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius)
@@ -78,6 +78,16 @@ public abstract class ArmyManager : MonoBehaviour
     {
         if (currentTarget.ContainsKey(self))
             currentTarget.Remove(self);
+    }
+
+    public HealingTurretStatic GetClosestHealingTurretStatic(Vector3 fromPosition)
+    {
+        return m_ArmyElements
+            .OfType<HealingTurretStatic>()
+            .OrderBy(t => Vector3.Distance(fromPosition, t.transform.position))
+            .FirstOrDefault();
+
+
     }
 
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
