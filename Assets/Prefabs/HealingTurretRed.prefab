@@ -208,11 +208,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2233187782191329132}
-  - component: {fileID: 2262733282072818340}
   - component: {fileID: 2230361028407880562}
   - component: {fileID: 6670003371116061860}
+  - component: {fileID: 7299944024028019066}
   m_Layer: 0
-  m_Name: TurretRed
+  m_Name: HealingTurretRed
   m_TagString: 1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -237,26 +237,6 @@ Transform:
   - {fileID: 2233187783204138644}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -89.485, z: 0}
---- !u!114 &2262733282072818340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2229378608176355572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0958ac78775cf7b49800d52522b7ff58, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Health: {fileID: 8766174128316665602}
-  m_TurretHead: {fileID: 2233187781786626746}
-  m_RotationSpeed: 90
-  m_RocketTravelDuration: 4
-  m_RocketPrefab: {fileID: 5353017525593995713, guid: 32ad9a3ad01ae624b9754da42bea12de, type: 3}
-  m_SpawnPoints:
-  - {fileID: 2233187781897070198}
-  - {fileID: 2233187784341059598}
 --- !u!135 &2230361028407880562
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -297,7 +277,7 @@ MonoBehaviour:
   logTaskChanges: 0
   group: 0
   resetValuesOnRestart: 0
-  externalBehavior: {fileID: 11400000, guid: 1b4a13ffb1a4e2941baf8c9b2cf3b661, type: 2}
+  externalBehavior: {fileID: 11400000, guid: 96daeef711b5eda49b1a8d78320c446b, type: 2}
   mBehaviorSource:
     behaviorName: TurretBehavior
     behaviorDescription: 
@@ -318,6 +298,24 @@ MonoBehaviour:
       Version: 
   gizmoViewMode: 2
   showBehaviorDesignerGizmo: 1
+--- !u!114 &7299944024028019066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229378608176355572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 300960ac617be004ebc636bae1f1a036, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Health: {fileID: 0}
+  m_TurretHead: {fileID: 0}
+  m_RotationSpeed: 120
+  m_RocketTravelDuration: 2
+  m_HealingRocketPrefab: {fileID: 5353017525593995713, guid: 29de7581b72129948a8e86b462748953, type: 3}
+  m_SpawnPoints: []
 --- !u!1 &2229378609485399760
 GameObject:
   m_ObjectHideFlags: 0
@@ -903,7 +901,7 @@ MonoBehaviour:
   m_OnDieEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2262733282072818340}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Turret, Assembly-CSharp
         m_MethodName: Die
         m_Mode: 1

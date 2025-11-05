@@ -39,6 +39,26 @@ public abstract class ArmyManager : MonoBehaviour
 
         return enemies.FirstOrDefault()?.gameObject;
     }
+
+    // Get random enemy turret (includes both Turret and HealingTurret)
+    public GameObject GetRandomEnemyAnyTurret(Vector3 centerPos, float minRadius, float maxRadius)
+    {
+        // Get both regular turrets and healing turrets
+        var regularTurrets = GetAllEnemiesOfType<Turret>(false);
+        var healingTurrets = GetAllEnemiesOfType<HealingTurret>(false);
+        
+        // Combine them
+        var allTurrets = regularTurrets.Cast<ArmyElement>()
+            .Concat(healingTurrets.Cast<ArmyElement>())
+            .Where(item => Vector3.Distance(centerPos, item.transform.position) > minRadius
+                        && Vector3.Distance(centerPos, item.transform.position) < maxRadius)
+            .ToList();
+
+        // Shuffle randomly
+        allTurrets.Sort((a, b) => Random.value.CompareTo(.5f));
+
+        return allTurrets.FirstOrDefault()?.gameObject;
+    }
     
     public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
     {
@@ -83,7 +103,7 @@ public abstract class ArmyManager : MonoBehaviour
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
 	{
         nDrones = m_ArmyElements.Count(item => item is Drone);
-        nTurrets = m_ArmyElements.Count(item => item is Turret);
+        nTurrets = m_ArmyElements.Count(item => item is Turret || item is HealingTurret);
         cumulatedHealth = (int)m_ArmyElements.Sum(item => item.Health);
     }
 

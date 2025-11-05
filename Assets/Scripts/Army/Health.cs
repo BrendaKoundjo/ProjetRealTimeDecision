@@ -31,6 +31,12 @@ public class Health : MonoBehaviour
 		m_Health = Mathf.Max(m_Health - damage, 0);
 		RefreshHealthDisplay();
 
-		if (m_Health == 0 && m_OnDieEvent != null) m_OnDieEvent.Invoke();
+		if (m_Health <= 0 && m_OnDieEvent != null) m_OnDieEvent.Invoke();
+	}
+
+	public void RestoreHealth(float healAmount)
+	{
+		m_Health = Mathf.Min(m_Health + healAmount, m_StartHealth);
+		RefreshHealthDisplay();
 	}
 }

@@ -47,16 +47,24 @@ public class Rocket : MonoBehaviour
             elapsedTime += Time.fixedDeltaTime;
         }
 
-        Destroy(gameObject);
-        ExplosionManager.Instance.SpawnExplosionOnObject(m_Transform.position, m_Transform.forward, TerrainManager.Instance.TerrainGO,ExplosionSize.big);
+        // Store tag and position before destroying gameObject
+        string rocketTag = gameObject.tag;
+        Vector3 rocketPosition = m_Transform.position;
+        Vector3 rocketForward = m_Transform.forward;
+
+        // Spawn explosion
+        ExplosionManager.Instance.SpawnExplosionOnObject(rocketPosition, rocketForward, TerrainManager.Instance.TerrainGO, ExplosionSize.big);
 
         //inflict damage to nearby enemies
         Collider[] hitColliders = Physics.OverlapSphere(endPos, m_DamageRadius);
 		foreach (var item in hitColliders)
 		{
-            if (!item.gameObject.CompareTag(gameObject.tag))
+            if (!item.gameObject.CompareTag(rocketTag))
                 item.GetComponentInChildren<Health>()?.InflictDamage(m_DamagePoints);
 		}
+
+        // Destroy after all operations are complete
+        Destroy(gameObject);
     }
 
 	//private void OnTriggerEnter(Collider other)

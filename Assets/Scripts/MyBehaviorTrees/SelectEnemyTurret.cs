@@ -21,9 +21,14 @@ public class SelectEnemyTurret : Action
 	{
 		if (m_ArmyElement.ArmyManager == null) return TaskStatus.Running; // reference to the ArmyManager has not been injected yet
 
-		target.Value = m_ArmyElement.ArmyManager.GetRandomEnemy<Turret>(transform.position,minRadius.Value,maxRadius.Value)?.transform;
+		// Use new method that targets ALL turret types (including HealingTurret)
+		target.Value = m_ArmyElement.ArmyManager.GetRandomEnemyAnyTurret(transform.position, minRadius.Value, maxRadius.Value)?.transform;
 
-		if (target.Value != null) return TaskStatus.Success;
+		if (target.Value != null)
+		{
+			Debug.Log($"[SelectEnemyTurret] {gameObject.name} targeting turret: {target.Value.name}");
+			return TaskStatus.Success;
+		}
 		else return TaskStatus.Failure;
 
 	}
