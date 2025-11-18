@@ -97,11 +97,8 @@ public abstract class ArmyManager : MonoBehaviour
         cumulatedHealth = (int)m_ArmyElements.Sum(item => item.Health);
     }
 
-    // Start is called before the first frame update
-    public virtual IEnumerator Start()
+    public virtual void Awake()
     {
-        yield return null; // on attend une frame que tous les objets aient �t� instanci�s ...
-
         GameObject[] allArmiesElements = GameObject.FindGameObjectsWithTag(m_ArmyTag);
         foreach (var item in allArmiesElements)
         {
@@ -109,11 +106,13 @@ public abstract class ArmyManager : MonoBehaviour
             armyElement.ArmyManager = this;
             m_ArmyElements.Add(armyElement);
         }
+    }
 
+    public virtual void Start()
+    {
         RefreshHudDisplay();
 
-        yield break;
-    }
+
 
     protected void RefreshHudDisplay()
 	{
@@ -129,6 +128,7 @@ public abstract class ArmyManager : MonoBehaviour
     {
         m_ArmyElements.Remove(go.GetComponent<IArmyElement>());
         RefreshHudDisplay();
+    }
 
         if (m_ArmyElements.Count == 0 & m_OnArmyIsDead!=null) m_OnArmyIsDead.Invoke();
     }
