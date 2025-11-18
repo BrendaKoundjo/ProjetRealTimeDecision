@@ -730,11 +730,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3692098336489702630, guid: 53ee34177c53a1e49ab122d883914d1d, type: 3}
   m_PrefabInstance: {fileID: 1332269038}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &366004416 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2233187784341059598, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-  m_PrefabInstance: {fileID: 1887749977}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &380370280 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3692098336489702630, guid: 53ee34177c53a1e49ab122d883914d1d, type: 3}
@@ -1620,11 +1615,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7690372767387060184, guid: da82f75cb37ee9c4d9a209aff8931aa4, type: 3}
   m_PrefabInstance: {fileID: 809137400}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &565321124 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2233187781897070198, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-  m_PrefabInstance: {fileID: 1887749977}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &573882032
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1981,6 +1971,108 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7690372767387060184, guid: da82f75cb37ee9c4d9a209aff8931aa4, type: 3}
   m_PrefabInstance: {fileID: 679579416}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &681497820
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 1625175208}
+    m_Modifications:
+    - target: {fileID: 339549609398137198, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 339549609398137198, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229378608176355572, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_Name
+      value: HealingTurret
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -14.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.71027756
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.70392174
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -89.485
+      objectReference: {fileID: 0}
+    - target: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: externalBehavior
+      value: 
+      objectReference: {fileID: 11400000, guid: 96daeef711b5eda49b1a8d78320c446b, type: 2}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: mBehaviorSource.behaviorName
+      value: healingturretredbehavior
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.Version
+      value: 1.7.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.JSONSerialization
+      value: '{"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true,"TransformmValue":0}]}'
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.fieldSerializationData.unityObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: 'mBehaviorSource.mTaskData.fieldSerializationData.unityObjects.Array.data[0]'
+      value: 
+      objectReference: {fileID: 1625175208}
+    - target: {fileID: 8766174128316665602, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2739900598797781911, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+    - target: {fileID: 8766174128316665602, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Die
+      objectReference: {fileID: 0}
+    - target: {fileID: 8766174128316665602, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: HealingTurretStatic, Assembly-CSharp
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
 --- !u!1001 &703743046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2186,11 +2278,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 425661509}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &725271987 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-  m_PrefabInstance: {fileID: 1887749977}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &744559166 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6442243436361512654, guid: 875e11f77d5653246be51c916270019f, type: 3}
@@ -4352,6 +4439,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1199449864}
   m_CullTransparentMesh: 1
+--- !u!4 &1212084423 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2233187782191329132, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
+  m_PrefabInstance: {fileID: 681497820}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1218143258 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8400768949065691242, guid: 9be5c7575d92240f0ab9b9c209905030, type: 3}
@@ -5543,17 +5635,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3692098336489702630, guid: 53ee34177c53a1e49ab122d883914d1d, type: 3}
   m_PrefabInstance: {fileID: 487578987}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1448561316 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8766174128316665602, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-  m_PrefabInstance: {fileID: 1887749977}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8276c8e9008944a47a332af8dd94d3cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1450862568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6377,7 +6458,7 @@ Transform:
   - {fileID: 155233799}
   - {fileID: 95420994}
   - {fileID: 1377613219}
-  - {fileID: 725271987}
+  - {fileID: 1212084423}
   - {fileID: 269337763}
   - {fileID: 555032085}
   - {fileID: 1650075061}
@@ -7524,107 +7605,6 @@ MonoBehaviour:
   m_PivotPoint: {fileID: 754130961}
   m_PivotAxis: {x: 0, y: 1, z: 0}
   m_RotationSpeed: 20
---- !u!1001 &1887749977
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 1625175208}
-    m_Modifications:
-    - target: {fileID: 339549609398137198, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 339549609398137198, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2229378608176355572, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_Name
-      value: HealingTurretRed
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 17.81
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.82
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -10.79
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7102757
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.7039237
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: -89.485
-      objectReference: {fileID: 0}
-    - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_Health
-      value: 
-      objectReference: {fileID: 1448561316}
-    - target: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_TurretHead
-      value: 
-      objectReference: {fileID: 2010818756}
-    - target: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_SpawnPoints.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: 'm_SpawnPoints.Array.data[0]'
-      value: 
-      objectReference: {fileID: 565321124}
-    - target: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: 'm_SpawnPoints.Array.data[1]'
-      value: 
-      objectReference: {fileID: 366004416}
-    - target: {fileID: 8766174128316665602, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_StartHealth
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8766174128316665602, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7299944024028019066, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-    - target: {fileID: 8766174128316665602, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: Die
-      objectReference: {fileID: 0}
-    - target: {fileID: 8766174128316665602, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-      propertyPath: m_OnDieEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: HealingTurret, Assembly-CSharp
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
 --- !u!1 &1923947094
 GameObject:
   m_ObjectHideFlags: 0
@@ -8177,11 +8157,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971945183}
   m_CullTransparentMesh: 1
---- !u!4 &2010818756 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2233187781786626746, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
-  m_PrefabInstance: {fileID: 1887749977}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2013792200
 PrefabInstance:
   m_ObjectHideFlags: 0
