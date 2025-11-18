@@ -39,4 +39,16 @@ public class Health : MonoBehaviour
 		m_Health = Mathf.Min(m_Health + healAmount, m_StartHealth);
 		RefreshHealthDisplay();
 	}
+
+	 public void Heal(float amount)
+    {
+        if (m_Health <= 0) return; 
+        m_Health = Mathf.Min(m_Health + amount, m_StartHealth);
+        RefreshHealthDisplay();
+    }
+
+    public float GetHealthRatio()
+    {
+        return m_Health / m_StartHealth;
+    }
 }

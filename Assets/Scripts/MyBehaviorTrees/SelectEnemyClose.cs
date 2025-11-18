@@ -21,11 +21,11 @@ public class SelectEnemyClose : Action
 	{
 		if (m_ArmyElement.ArmyManager == null)
 		{
-			Debug.Log("[SelectEnemyClose] ArmyManager pas encore prêt.");
+			//Debug.Log("[SelectEnemyClose] ArmyManager pas encore prêt.");
 			return TaskStatus.Running;
 		}
 
-		Debug.Log($"[SelectEnemyClose] Recherche d’un ennemi entre {minRadius.Value}m et {maxRadius.Value}m...");
+		//Debug.Log($"[SelectEnemyClose] Recherche d’un ennemi entre {minRadius.Value}m et {maxRadius.Value}m...");
 
 	
 		var enemy = m_ArmyElement.ArmyManager.LockOrGetCurrentTarget(
@@ -39,12 +39,12 @@ public class SelectEnemyClose : Action
 		if (enemy != null)
 		{
 			target.Value = enemy.transform;
-			Debug.Log($"[SelectEnemyClose] Ennemi trouvé → {enemy.name} à {Vector3.Distance(transform.position, enemy.transform.position)}m");
+			//Debug.Log($"[SelectEnemyClose] Ennemi trouvé → {enemy.name} à {Vector3.Distance(transform.position, enemy.transform.position)}m");
 			return TaskStatus.Success;
 		}
 		else
 		{
-			Debug.Log("[SelectEnemyClose] Aucun ennemi trouvé dans la zone.");
+			//Debug.Log("[SelectEnemyClose] Aucun ennemi trouvé dans la zone.");
 			return TaskStatus.Failure;
 		}
 	}

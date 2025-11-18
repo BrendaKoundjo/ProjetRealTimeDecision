@@ -21,11 +21,11 @@ public class SelectEnemyCloseTurret : Action
 	{
 		if (m_ArmyElement.ArmyManager == null)
 		{
-			Debug.Log("[SelectEnemyCloseTurret] ArmyManager pas encore prêt.");
+			//Debug.Log("[SelectEnemyCloseTurret] ArmyManager pas encore prêt.");
 			return TaskStatus.Running;
 		}
 
-		Debug.Log($"[SelectEnemyCloseTurret] Recherche d'une tourelle entre {minRadius.Value}m et {maxRadius.Value}m...");
+		//Debug.Log($"[SelectEnemyCloseTurret] Recherche d’une tourelle entre {minRadius.Value}m et {maxRadius.Value}m...");
 
 	
 		// Use new method that targets ALL turret types (including HealingTurret)
@@ -40,12 +40,12 @@ public class SelectEnemyCloseTurret : Action
 		if (enemy != null)
 		{
 			target.Value = enemy.transform;
-			Debug.Log($"[SelectEnemyCloseTurret] Tourelle Ennemi trouvée → {enemy.name} à {Vector3.Distance(transform.position, enemy.transform.position)}m");
+			//Debug.Log($"[SelectEnemyCloseTurret] Tourelle Ennemi trouvées → {enemy.name} à {Vector3.Distance(transform.position, enemy.transform.position)}m");
 			return TaskStatus.Success;
 		}
 		else
 		{
-			Debug.Log("[SelectEnemyCloseTurret] Aucune tourelles trouvées dans la zone.");
+			//Debug.Log("[SelectEnemyCloseTurret] Aucune tourelles trouvées dans la zone.");
 			return TaskStatus.Failure;
 		}
 	}
