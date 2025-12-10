@@ -1,0 +1,22 @@
+# Use Unity YAML merge for scene and prefab merges
+*.unity merge=unityyamlmerge eol=lf
+*.prefab merge=unityyamlmerge eol=lf
+*.asset merge=unityyamlmerge eol=lf
+*.mat merge=unityyamlmerge eol=lf
+*.controller merge=unityyamlmerge eol=lf
+*.anim merge=unityyamlmerge eol=lf
+
+# Ensure consistent line endings for text-based Unity files
+*.cs text diff=csharp
+*.shader text
+*.asmdef text
+*.json text
+*.txt text
+
+# Binary files — do not attempt to merge
+*.png binary
+*.jpg binary
+*.fbx binary
+*.mp3 binary
+*.wav binary
+*.ogg binary

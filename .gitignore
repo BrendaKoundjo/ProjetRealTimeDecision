@@ -1,3 +1,45 @@
+## Unity generated
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/Assets/AssetStoreTools*
+
+# Visual Studio / MonoDevelop / Rider
+/.vs/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# OS generated
+.DS_Store
+Thumbs.db
+
+# Unity Auto-generated meta files
+*.pidb.meta
+
+# Crash logs
+sysinfo.txt
+
+# Build results
+/Build/
+
+# Other
+*.apk
+*.aab
+*.unitypackage
 .idea
 .vscode
 #
