@@ -36,6 +36,16 @@ sysinfo.txt
 # Build results
 /Build/
 
+# NavMesh and baked data (machine-specific, should not be committed)
+**/NavMesh.asset
+**/NavMesh.asset.meta
+
+# Baked lighting data (machine-specific)
+**/LightingData.asset
+**/LightingData.asset.meta
+**/reflection_probe_0.exr
+**/reflection_probe_0.exr.meta
+
 # Other
 *.apk
 *.aab
