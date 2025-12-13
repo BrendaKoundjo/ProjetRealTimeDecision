@@ -12,6 +12,7 @@ public class HealingTurretStatic : ArmyElement
     [SerializeField] ParticleSystem m_HealingEffect;    
     ArmyManager m_Manager;
 
+
     private void Start()
     {
         m_Manager = GetComponent<IArmyElement>().ArmyManager;
@@ -20,6 +21,7 @@ public class HealingTurretStatic : ArmyElement
 
     IEnumerator HealingRoutine()
     {
+
         while (true)
         {
             HealAlliesInRange();

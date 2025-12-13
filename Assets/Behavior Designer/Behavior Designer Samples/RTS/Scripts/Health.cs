@@ -12,7 +12,7 @@ namespace BehaviorDesigner.Samples
         public float startHealth = 100;
 
         public float Amount { get { return health; } }
-        private float health;
+        public float health;
 
         public void Start()
         {

@@ -10,10 +10,22 @@ public class Health : MonoBehaviour
 	[SerializeField] float m_StartHealth;
 	float m_Health;
 	public float Value => m_Health;
+    private ArmyElement owner;
 
 	[SerializeField] Slider m_HealthBar;
 
 	[SerializeField] UnityEvent m_OnDieEvent;
+
+
+    private void Awake()
+        {
+            owner = GetComponentInParent<ArmyElement>();
+
+            if (owner == null)
+            {
+                Debug.LogError($"[Health] Aucun ArmyElement parent pour {name}");
+            }
+        }
 
 	private void Start()
 	{
@@ -31,7 +43,9 @@ public class Health : MonoBehaviour
 		m_Health = Mathf.Max(m_Health - damage, 0);
 		RefreshHealthDisplay();
 
-		if (m_Health <= 0 && m_OnDieEvent != null) m_OnDieEvent.Invoke();
+		if (m_Health <= 0 && m_OnDieEvent != null) {
+	        owner.Die();
+	         };
 	}
 
 	public void RestoreHealth(float healAmount)

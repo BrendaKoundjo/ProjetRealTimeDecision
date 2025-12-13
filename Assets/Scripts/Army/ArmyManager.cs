@@ -117,16 +117,23 @@ public abstract class ArmyManager : MonoBehaviour
         cumulatedHealth = (int)m_ArmyElements.Sum(item => item.Health);
     }
 
-    public virtual void Awake()
-{
-    GameObject[] allArmiesElements = GameObject.FindGameObjectsWithTag(m_ArmyTag);
-    foreach (var item in allArmiesElements)
-    {
-        IArmyElement armyElement = item.GetComponent<IArmyElement>();
-        armyElement.ArmyManager = this;
-        m_ArmyElements.Add(armyElement);
-    }
-}
+  public void Awake()
+  {
+      GameObject[] allArmiesElements = GameObject.FindGameObjectsWithTag(m_ArmyTag);
+
+      foreach (var item in allArmiesElements)
+      {
+          IArmyElement armyElement = item.GetComponent<IArmyElement>();
+
+          if (armyElement == null)
+          {
+              continue;
+          }
+
+          armyElement.ArmyManager = this;
+          m_ArmyElements.Add(armyElement);
+      }
+  }
 
     public virtual void Start()
     {
@@ -151,6 +158,19 @@ public abstract class ArmyManager : MonoBehaviour
 
         if (m_ArmyElements.Count == 0 & m_OnArmyIsDead!=null) m_OnArmyIsDead.Invoke();
     }
+    public void RegisterArmyElement(IArmyElement element)
+    {
+        if (m_ArmyElements.Contains(element))
+        {
+            return;
+        }
+
+        element.ArmyManager = this;
+        m_ArmyElements.Add(element);
+
+        RefreshHudDisplay();
+    }
+
     
 }
 

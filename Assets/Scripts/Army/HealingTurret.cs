@@ -22,6 +22,7 @@ public class HealingTurret : ArmyElement
 
 	IEnumerator m_RotationCoroutine = null;
 
+
 	// Use this for initialization
 	IEnumerator Start()
 	{
@@ -31,10 +32,12 @@ public class HealingTurret : ArmyElement
 	private void Update()
 	{
 		// Safety check: force die if health reaches 0 (in case OnDieEvent not hooked up)
-		if (Health <= 0)
-		{
-			Die();
-		}
+		// if (Health <= 0)
+		// {
+		// 	Die();
+		// }
+
+		 Debug.Log($"Healing turret health: {Health}");
 	}
 
 	public void ShootHealing(Vector3 targetPos)
