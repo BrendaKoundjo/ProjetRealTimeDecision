@@ -1,36 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
+using System.Linq;
 
-public class FlyingDrone : ArmyElement,IShoot
+public class FlyingDrone : ArmyElement
 {
-    [SerializeField] GameObject m_BulletPrefab;
-    [SerializeField] Transform[] m_BulletSpawnPos;
-	[SerializeField] ParticleSystem[] m_ParticleSystems;
+    [SerializeField] float shieldAmount = 40f;
+    [SerializeField] float shieldRange = 6f;
+    [SerializeField] float shieldCooldown = 3f;
 
-	Transform m_Transform;
+    float lastShieldTime;
 
-	private void Awake()
-	{
-		m_Transform = transform;
-	}
+    public bool CanShield => Time.time - lastShieldTime >= shieldCooldown;
 
-	public void Shoot()
-	{
-		//Debug.Break();
-		for (int i = 0; i < m_BulletSpawnPos.Length; i++)
-		{
-			Transform bulletSpawnPos = m_BulletSpawnPos[i];
-			GameObject newBulletGO = Instantiate(m_BulletPrefab, bulletSpawnPos.position, Quaternion.LookRotation(bulletSpawnPos.forward,Vector3.up));
-			newBulletGO.tag = gameObject.tag;
-		}
-	}
+    public bool TryShieldAlly()
+    {
+        if (!CanShield || ArmyManager == null)
+            return false;
 
-	public void Die()
-	{
-		ArmyManager.ArmyElementHasBeenKilled(gameObject);
-		Destroy(gameObject);
-	}
+        var ally = ArmyManager
+            .GetComponentsInChildren<Drone>()
+            .Where(d => d != this)
+            .OrderBy(d => Vector3.Distance(transform.position, d.transform.position))
+            .FirstOrDefault(d => Vector3.Distance(transform.position, d.transform.position) <= shieldRange);
 
+        if (ally == null)
+            return false;
+
+        Shield shield = ally.GetComponent<Shield>();
+        if (shield == null)
+            return false;
+
+        shield.ApplyShield(shieldAmount);
+        lastShieldTime = Time.time;
+
+        Debug.Log($"{name} shield {ally.name}");
+        return true;
+    }
 }

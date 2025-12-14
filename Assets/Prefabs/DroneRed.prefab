@@ -1214,6 +1214,7 @@ GameObject:
   - component: {fileID: 7690372767387060180}
   - component: {fileID: 7690372767387060197}
   - component: {fileID: 7690372767387060196}
+  - component: {fileID: -6762004820230795543}
   m_Layer: 0
   m_Name: DroneRed
   m_TagString: 1
@@ -1348,3 +1349,17 @@ MonoBehaviour:
   m_MissileSpawnPos:
   - {fileID: 7376284243647085243}
   - {fileID: 7376284244114932892}
+--- !u!114 &-6762004820230795543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7690372767387060181}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b0ab7687d6ca0498f56f98e861bbbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShield: 50
+  duration: 5

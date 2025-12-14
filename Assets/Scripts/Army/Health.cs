@@ -40,6 +40,12 @@ public class Health : MonoBehaviour
 
 	public void InflictDamage(float damage)
 	{
+	    var shield = GetComponent<Shield>();
+        if (shield != null)
+        {
+            damage = shield.AbsorbDamage(damage);
+        }
+
 		m_Health = Mathf.Max(m_Health - damage, 0);
 		RefreshHealthDisplay();
 
