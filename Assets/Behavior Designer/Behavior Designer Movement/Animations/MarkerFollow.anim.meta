@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4e102685eb400e54bb2eced40a6f2efd
+timeCreated: 1470316175
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Animations/MarkerFollow.anim
+  uploadId: 738179

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 57b6c5f3e2fa7ea4cb7aded019a9cf4c
+timeCreated: 1470487947
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 28980
+  packageName: Behavior Designer - Formations Pack
+  packageVersion: 1.2.2
+  assetPath: Assets/Behavior Designer/Behavior Designer Formations/Scene/scene/NavMesh.asset
+  uploadId: 737460

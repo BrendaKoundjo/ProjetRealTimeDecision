@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f56c3f0bb5eaec84cb7160b46ba81b98
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 28980
+  packageName: Behavior Designer - Formations Pack
+  packageVersion: 1.2.2
+  assetPath: Assets/Behavior Designer/Behavior Designer Formations/Scripts/Tasks/Line.cs
+  uploadId: 737460

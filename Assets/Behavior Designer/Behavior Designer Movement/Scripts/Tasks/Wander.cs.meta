@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c16acf9e9d926314489b4fe6473fe118
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Scripts/Tasks/Wander.cs
+  uploadId: 738179

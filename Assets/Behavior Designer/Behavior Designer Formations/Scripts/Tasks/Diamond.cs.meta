@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c58b039dec9738c4fb23062d16604c3b
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 28980
+  packageName: Behavior Designer - Formations Pack
+  packageVersion: 1.2.2
+  assetPath: Assets/Behavior Designer/Behavior Designer Formations/Scripts/Tasks/Diamond.cs
+  uploadId: 737460

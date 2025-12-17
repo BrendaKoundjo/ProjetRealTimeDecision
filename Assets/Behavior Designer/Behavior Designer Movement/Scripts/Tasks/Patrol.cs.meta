@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: eea43cbff87e7e0468c9e3ac2b949dd0
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 16853
+  packageName: Behavior Designer - Movement Pack
+  packageVersion: 1.6.2f1
+  assetPath: Assets/Behavior Designer/Behavior Designer Movement/Scripts/Tasks/Patrol.cs
+  uploadId: 738179

@@ -1,0 +1,81 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
+using UnityEngine.Events;
+
+public class Health : MonoBehaviour
+{
+	[SerializeField] float m_StartHealth;
+	float m_Health;
+	public float Value => m_Health;
+    private ArmyElement owner;
+
+	[SerializeField] Slider m_HealthBar;
+
+	[SerializeField] UnityEvent m_OnDieEvent;
+
+
+    private void Awake()
+        {
+            owner = GetComponentInParent<ArmyElement>();
+
+            if (owner == null)
+            {
+                Debug.LogError($"[Health] Aucun ArmyElement parent pour {name}");
+            }
+        }
+
+	private void Start()
+	{
+		m_Health = m_StartHealth;
+		RefreshHealthDisplay();
+	}
+
+	void RefreshHealthDisplay()
+	{
+		m_HealthBar.value = m_Health / m_StartHealth;
+	}
+
+    public void InflictDamage(float damage)
+	{
+	    var shield = GetComponent<Shield>();
+        if (shield != null)
+        {
+            damage = shield.AbsorbDamage(damage);
+        }
+
+		m_Health = Mathf.Max(m_Health - damage, 0);
+		RefreshHealthDisplay();
+
+		if (m_Health <= 0)
+		{
+			// Invoke any UnityEvent listeners if assigned
+			m_OnDieEvent?.Invoke();
+			// Ensure the owning ArmyElement is destroyed/removed
+			if (owner != null)
+				owner.Die();
+			else
+				Debug.LogWarning($"[Health] {name} reached 0 HP but has no owner ArmyElement");
+		}
+	}
+
+	public void RestoreHealth(float healAmount)
+	{
+		m_Health = Mathf.Min(m_Health + healAmount, m_StartHealth);
+		RefreshHealthDisplay();
+	}
+
+	 public void Heal(float amount)
+    {
+        if (m_Health <= 0) return; 
+        m_Health = Mathf.Min(m_Health + amount, m_StartHealth);
+        RefreshHealthDisplay();
+    }
+
+    public float GetHealthRatio()
+    {
+        return m_Health / m_StartHealth;
+    }
+}

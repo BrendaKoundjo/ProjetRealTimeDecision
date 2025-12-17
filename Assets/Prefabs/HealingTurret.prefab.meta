@@ -1,0 +1,11 @@
+fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Prefabs/HealingRocketRed.prefab.meta
+guid: f2eb7c33973135b4498eabdabc2edc81
+========
+guid: 42566fd46d9cd164a88c9f9c17ab65f8
+>>>>>>>> healing-turret:Assets/Prefabs/HealingTurret.prefab.meta
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
