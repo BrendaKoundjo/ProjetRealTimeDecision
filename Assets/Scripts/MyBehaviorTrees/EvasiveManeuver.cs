@@ -34,10 +34,6 @@ public class EvasiveManeuver : Action
             }
         }
 
-        if (armyElement == null)
-            Debug.LogError($"[EvasiveManeuver] Aucun IArmyElement trouvé sur {gameObject.name}");
-        else
-            Debug.Log($"[EvasiveManeuver] IArmyElement trouvé sur {gameObject.name}");
     }
 
     public override TaskStatus OnUpdate()
@@ -75,8 +71,6 @@ public class EvasiveManeuver : Action
             return TaskStatus.Running;
         }
 
-        // PAS DE MENACE
-        // Debug.Log("[EvasiveManeuver] Aucun missile détecté.");
         return TaskStatus.Failure;
     }
 
@@ -93,17 +87,14 @@ public class EvasiveManeuver : Action
         if (NavMesh.SamplePosition(left, out NavMeshHit hitLeft, 1f, NavMesh.AllAreas))
         {
             chosen = hitLeft.position;
-            Debug.Log("[EvasiveManeuver] Esquive côté GAUCHE");
         }
         else if (NavMesh.SamplePosition(right, out NavMeshHit hitRight, 1f, NavMesh.AllAreas))
         {
             chosen = hitRight.position;
-            Debug.Log("[EvasiveManeuver] Esquive côté DROITE");
         }
         else if (NavMesh.SamplePosition(back, out NavMeshHit hitBack, 1f, NavMesh.AllAreas))
         {
          chosen = hitBack.position;
-         Debug.LogWarning("[EvasiveManeuver] Esquive de SECOURS vers l'ARRIÈRE !");
         }
         else
         {
@@ -122,10 +113,8 @@ public class EvasiveManeuver : Action
         agent.updateRotation = prevUpdateRotation;
         
         onCooldown = true;
-        Debug.Log("[EvasiveManeuver] Fin esquive -> cooldown...");
         yield return new WaitForSeconds(dodgeCooldown.Value);
 
         onCooldown = false;
-        Debug.Log("[EvasiveManeuver] Fin du cooldown, prêt à esquiver !");
     }
 }

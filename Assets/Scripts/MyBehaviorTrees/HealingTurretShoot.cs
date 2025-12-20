@@ -26,7 +26,6 @@ public class HealingTurretShoot : Action
 		// Check if target is still alive
 		if (target.Value == null)
 		{
-			Debug.LogWarning("[HealingTurretShoot] Target is null (might have died)!");
 			return TaskStatus.Failure;
 		}
 

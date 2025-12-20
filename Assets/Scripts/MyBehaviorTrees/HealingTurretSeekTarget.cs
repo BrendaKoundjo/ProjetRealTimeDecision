@@ -36,7 +36,6 @@ public class HealingTurretSeekTarget : Action
 		if (target.Value != null)
 		{
 			healingTurret.RotateTowards(target.Value.position, () => hasRotated = true);
-			Debug.Log($"[HealingTurretSeekTarget] Rotating towards {target.Value.name}");
 		}
 	}
 

@@ -37,7 +37,6 @@ public class HealingTurret : ArmyElement
 		// 	Die();
 		// }
 
-		 Debug.Log($"Healing turret health: {Health}");
 	}
 
 	public void ShootHealing(Vector3 targetPos)

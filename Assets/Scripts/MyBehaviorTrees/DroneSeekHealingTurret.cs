@@ -25,34 +25,26 @@ public class DroneSeekHealingTurret : Action
 
     public override TaskStatus OnUpdate()
     {
-        Debug.Log($"[{gameObject.name}] OnAwake(): "
-              + $"agent={(agent ? "OK" : "null")}, "
-              + $"drone={(drone ? "OK" : "null")}, "
-              + $"health={(health ? "OK" : "null")}");
+
         if (health == null)
         {
-            Debug.LogWarning($"{gameObject.name}: pas de Health attaché !");
             return TaskStatus.Failure;
         }
 
         if (drone == null)
         {
-            Debug.LogWarning($"{gameObject.name}: pas d'ArmyElement attaché !");
             return TaskStatus.Failure;
         }
 
         if (drone.ArmyManager == null)
         {
-            Debug.LogWarning($"{gameObject.name}: ArmyManager non assigné !");
             return TaskStatus.Failure;
         }
 
         float healthRatio = health.GetHealthRatio();
-        Debug.Log($"{gameObject.name}: health ratio = {healthRatio}");
 
         if (healthRatio >= lowHealthThreshold.Value)
         {
-            Debug.Log($"{gameObject.name}: santé suffisante, pas besoin de se soigner");
             return TaskStatus.Failure;
         }
 
@@ -60,7 +52,7 @@ public class DroneSeekHealingTurret : Action
 
         if (targetTurret == null)
         {
-            Debug.Log($"{gameObject.name}: pas de tourelle de soin trouvée !");
+
             return TaskStatus.Failure;
         }
 
@@ -69,23 +61,11 @@ public class DroneSeekHealingTurret : Action
         if (agent.isStopped)
         {
             agent.isStopped = false;
-            Debug.Log($"{gameObject.name}: déblocage de l'agent");
         }
 
         if (!agent.hasPath || agent.destination != targetTurret.transform.position)
         {
             agent.SetDestination(targetTurret.transform.position);
-            Debug.Log($"{gameObject.name}: destination mise à jour");
-        }
-        
-
-        if (agent.hasPath)
-        {
-            Debug.Log($"{gameObject.name}: chemin trouvé, destination = {agent.destination}");
-        }
-        else
-        {
-            Debug.LogWarning($"{gameObject.name}: aucun chemin trouvé vers la tourelle !");
         }
 
 

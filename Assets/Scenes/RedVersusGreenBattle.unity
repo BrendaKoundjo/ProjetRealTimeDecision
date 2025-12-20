@@ -2244,7 +2244,7 @@ PrefabInstance:
     - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
       propertyPath: externalBehavior
       value: 
-      objectReference: {fileID: 11400000, guid: 1b4a13ffb1a4e2941baf8c9b2cf3b661, type: 2}
+      objectReference: {fileID: 11400000, guid: 331ad585d51403147ad69003df0900c6, type: 2}
     - target: {fileID: 6670003371116061860, guid: f2eb7c33973135b4498eabdabc2edc81, type: 3}
       propertyPath: mBehaviorSource.behaviorName
       value: healingturretredbehavior
@@ -8176,6 +8176,14 @@ PrefabInstance:
     - target: {fileID: 2327147499843344142, guid: 9944260fb3f726c45b7e93a9e9f4e8e5, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: 9944260fb3f726c45b7e93a9e9f4e8e5, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.Version
+      value: 1.7.12
+      objectReference: {fileID: 0}
+    - target: {fileID: 6670003371116061860, guid: 9944260fb3f726c45b7e93a9e9f4e8e5, type: 3}
+      propertyPath: mBehaviorSource.mTaskData.JSONSerialization
+      value: '{"Variables":[{"Type":"BehaviorDesigner.Runtime.SharedTransform","Name":"Target","IsShared":true}]}'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
