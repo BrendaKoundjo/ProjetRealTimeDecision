@@ -16,23 +16,43 @@ public class SelectClosestAllyWithoutShield : Action
     public override void OnStart()
     {
         drone = GetComponent<FlyingDrone>();
+        if (drone == null)
+            Debug.LogError("[SelectClosestAlly] No FlyingDrone component found!");
+        else
+            Debug.Log("[SelectClosestAlly] OnStart - FlyingDrone found");
     }
 
     public override TaskStatus OnUpdate()
     {
-        if (drone == null || drone.ArmyManager == null)
+        if (drone == null)
+        {
+            Debug.LogError("[SelectClosestAlly] drone is NULL!");
             return TaskStatus.Failure;
+        }
 
-        var allies = drone.ArmyManager
-            .GetComponentsInChildren<Drone>()
-            .Where(d => d.GetComponent<Shield>() != null && !d.GetComponent<Shield>().HasShield)
-            .OrderBy(d => Vector3.Distance(transform.position, d.transform.position))
-            .FirstOrDefault();
-
-        if (allies == null)
+        if (drone.ArmyManager == null)
+        {
+            Debug.LogError($"[SelectClosestAlly] {drone.name} has no ArmyManager!");
             return TaskStatus.Failure;
+        }
 
-        target.Value = allies.transform;
+        Debug.Log($"[SelectClosestAlly] Searching for allies within {range}m...");
+
+        // Use the ArmyManager's method to get allies with proper filtering
+        var closestAlly = drone.ArmyManager.GetClosestAllyWithoutShield(
+            transform.position,
+            drone,
+            range
+        );
+
+        if (closestAlly == null)
+        {
+             Debug.Log($"[SelectClosestAlly] No unshielded allies found");
+            return TaskStatus.Failure;
+        }
+
+        Debug.Log($"[SelectClosestAlly] Found target: {closestAlly.name}");
+        target.Value = closestAlly.transform;
         return TaskStatus.Success;
     }
 }

@@ -28,7 +28,12 @@ public class RaycastBullet : MonoBehaviour
 
 				ExplosionManager.Instance.SpawnExplosionOnObject(m_Transform.position, m_Transform.forward, hitGO, ExplosionSize.small);
 
-				hitGO.GetComponentInChildren<Health>()?.InflictDamage(m_DamagePoints);
+				Transform root = hitGO.transform.root;
+				var health = hitGO.GetComponent<Health>()
+				             ?? hitGO.GetComponentInChildren<Health>()
+				             ?? hitGO.GetComponentInParent<Health>()
+				             ?? (root != null ? root.GetComponentInChildren<Health>() : null);
+				health?.InflictDamage(m_DamagePoints);
 				break;
 			}
 		}

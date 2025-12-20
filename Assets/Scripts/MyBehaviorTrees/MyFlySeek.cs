@@ -13,17 +13,23 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 		[Tooltip("The ground layers to raycast in order to compute the offset height above the ground")]
 		public LayerMask m_GroundLayers;
 		[Tooltip("The max speed of the agent")]
-		public float m_TranslationMaxSpeed = 10;
+		public float m_TranslationMaxSpeed = 3;  // Reduced for smoother movement
 		[Tooltip("The acceleration of the agent")]
-		public float m_LinearAcceleration = 10;
+		public float m_LinearAcceleration = 3;   // Reduced for smoother movement
 		[Tooltip("The angular speed of the agent")]
-		public float m_AngularSpeed = 120;
+		public float m_AngularSpeed = 90;
 
-		public float m_ArriveDistance = 0.2f;
+		public float m_ArriveDistance = 5f;  // Stopping distance - shield drone stays 5m away
 		public float m_ArriveAngle = 1;
+		public float m_MinHeightAboveGround = 3f;  // Minimum height to prevent ground clipping
+
+		[Tooltip("Max time to pursue the same target before giving up (seconds)")]
+		public float m_MaxPursuitTime = 4f;
 
 		float m_TranslationSpeed = 0;
 		float m_InitHeightFromGround;
+		Transform m_LastTarget;
+		float m_TargetStartTime;
 
 
 		Rigidbody m_Rigidbody;
@@ -35,10 +41,23 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 			m_Transform = transform;
 			m_TranslationSpeed = 0;
 
+			if (m_Rigidbody == null)
+				Debug.LogError($"[MyFlySeek] {transform.name}: No Rigidbody found!");
+
 			Vector3 posOnTerrain = Vector3.zero;
 			Vector3 normalOnTerrain = Vector3.zero;
-			if (TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(m_Transform.position, ref posOnTerrain, ref normalOnTerrain))
-				m_InitHeightFromGround = Vector3.Distance(posOnTerrain, m_Transform.position);
+			if (TerrainManager.Instance != null && TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(m_Transform.position, ref posOnTerrain, ref normalOnTerrain))
+			{
+				m_InitHeightFromGround = Mathf.Max(Vector3.Distance(posOnTerrain, m_Transform.position), m_MinHeightAboveGround);
+			}
+			else
+			{
+				m_InitHeightFromGround = m_MinHeightAboveGround;
+			}
+
+			Debug.Log($"[MyFlySeek] {transform.name}: Init height = {m_InitHeightFromGround}m");
+			m_LastTarget = m_Target.Value;
+			m_TargetStartTime = Time.time;
 		}
 
 		bool HasArrivedTranslation()
@@ -66,9 +85,34 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 		// Return running if the agent hasn't reached the destination yet
 		public override TaskStatus OnUpdate()
         {
-            if (m_Target.Value == null) return TaskStatus.Failure;
+            if (m_Target.Value == null)
+			{
+				Debug.LogWarning($"[MyFlySeek] {transform.name}: Target is NULL!");
+				return TaskStatus.Failure;
+			}
 
-            if (HasArrived()) return TaskStatus.Success;
+			// Reset timer when target changes
+			if (m_Target.Value != m_LastTarget)
+			{
+				m_LastTarget = m_Target.Value;
+				m_TargetStartTime = Time.time;
+			}
+
+			Debug.Log($"[MyFlySeek] {transform.name}: Moving toward {m_Target.Value.name}. Distance: {Vector3.Distance(transform.position, m_Target.Value.position):F2}m");
+
+            if (HasArrived())
+			{
+				Debug.Log($"[MyFlySeek] {transform.name}: Arrived at target!");
+				return TaskStatus.Success;
+			}
+
+			// Give up after timeout to allow reselection
+			if (Time.time - m_TargetStartTime > m_MaxPursuitTime)
+			{
+				Debug.Log($"[MyFlySeek] {transform.name}: Pursuit timed out after {m_MaxPursuitTime}s, giving up target {m_LastTarget?.name}");
+				m_Target.Value = null; // Encourage selector to pick a new target
+				return TaskStatus.Failure;
+			}
 
             return TaskStatus.Running;
         }
@@ -86,10 +130,10 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				Vector3 nextPosition = m_Rigidbody.position + dist * transform.forward;
 				Vector3 normalOnTerrain = Vector3.zero;
 
-				if (TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(nextPosition, ref nextPosition, ref normalOnTerrain))
+				if (TerrainManager.Instance != null && TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(nextPosition, ref nextPosition, ref normalOnTerrain))
 				{
-					//position
-					nextPosition += Vector3.up * m_InitHeightFromGround;
+					//position - ensure minimum height
+					nextPosition += Vector3.up * Mathf.Max(m_InitHeightFromGround, m_MinHeightAboveGround);
 					Vector3 move = nextPosition - m_Rigidbody.position;
 
 					if (move.sqrMagnitude > 0)
@@ -99,16 +143,24 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 
 			if (!HasArrivedRotation())
 			{
-				//orientation
-				Quaternion targetQ = Quaternion.LookRotation(Vector3.ProjectOnPlane(m_Target.Value.position - m_Transform.position, Vector3.up).normalized);
-				Quaternion newtOrientation = Quaternion.RotateTowards(m_Transform.rotation, targetQ, m_AngularSpeed * Time.fixedDeltaTime);
-				m_Rigidbody.MoveRotation(newtOrientation);
+				//orientation - look horizontally at target, not down
+				Vector3 targetDir = m_Target.Value.position - m_Transform.position;
+				targetDir.y = 0;  // Keep rotation horizontal only
+
+				if (targetDir.sqrMagnitude > 0.01f)
+				{
+					Quaternion targetQ = Quaternion.LookRotation(targetDir.normalized);
+					Quaternion newtOrientation = Quaternion.RotateTowards(m_Transform.rotation, targetQ, m_AngularSpeed * Time.fixedDeltaTime);
+					m_Rigidbody.MoveRotation(newtOrientation);
+				}
 			}
 		}
 
 		public override void OnReset()
         {
-            m_Target = null; 
+            m_Target = null;
+			m_LastTarget = null;
+			m_TargetStartTime = 0f;
         }
     }
 }

@@ -26,7 +26,6 @@ public class SelectEnemyTurret : Action
 
 		if (target.Value != null)
 		{
-			Debug.Log($"[SelectEnemyTurret] {gameObject.name} targeting turret: {target.Value.name}");
 			return TaskStatus.Success;
 		}
 		else return TaskStatus.Failure;

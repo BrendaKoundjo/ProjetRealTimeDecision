@@ -12,13 +12,32 @@ public class ApplyShield : Action
     public override void OnStart()
     {
         drone = GetComponent<FlyingDrone>();
+        if (drone == null)
+            Debug.LogError("[ApplyShield] No FlyingDrone component found!");
+        else
+            Debug.Log("[ApplyShield] OnStart - FlyingDrone found");
     }
 
     public override TaskStatus OnUpdate()
     {
-        if (drone != null && drone.TryShieldAlly())
-            return TaskStatus.Success;
+        if (drone == null)
+        {
+            Debug.LogError("[ApplyShield] drone is NULL!");
+            return TaskStatus.Failure;
+        }
 
-        return TaskStatus.Failure;
+        Debug.Log("[ApplyShield] Attempting to shield ally...");
+        bool success = drone.TryShieldAlly();
+
+        if (success)
+        {
+            Debug.Log("[ApplyShield] Shield applied successfully!");
+            return TaskStatus.Success;
+        }
+
+        Debug.Log("[ApplyShield] Failed to apply shield (cooldown or no target) - continuing anyway");
+        // Return Running instead of Failure so Parallel Complete doesn't fail
+        // This allows the drone to keep orbiting while waiting for cooldown
+        return TaskStatus.Running;
     }
 }

@@ -66,14 +66,19 @@ public class Missile : MonoBehaviour
         else Destroy(gameObject);
     }
 
-	private void OnTriggerEnter(Collider other)
-	{
+    private void OnTriggerEnter(Collider other)
+    {
         if (!other.CompareTag(gameObject.tag))
         {
-            ExplosionManager.Instance.SpawnExplosionOnObject(m_Transform.position,m_Transform.forward,other.gameObject,ExplosionSize.small);
+            ExplosionManager.Instance.SpawnExplosionOnObject(m_Transform.position, m_Transform.forward, other.gameObject, ExplosionSize.small);
             Destroy(gameObject);
 
-            other.GetComponentInChildren<Health>()?.InflictDamage(m_DamagePoints);
+            Transform root = other.transform.root;
+            var health = other.GetComponent<Health>()
+                         ?? other.GetComponentInChildren<Health>()
+                         ?? other.GetComponentInParent<Health>()
+                         ?? (root != null ? root.GetComponentInChildren<Health>() : null);
+            health?.InflictDamage(m_DamagePoints);
         }
     }
 }

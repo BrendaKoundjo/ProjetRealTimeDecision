@@ -56,7 +56,6 @@ public class DroneSeekHealingTurret : Action
             return TaskStatus.Failure;
         }
 
-        Debug.Log($"{gameObject.name}: se dirige vers la tourelle {targetTurret.name} à {Vector3.Distance(transform.position, targetTurret.transform.position):F2}m");
 
         if (agent.isStopped)
         {

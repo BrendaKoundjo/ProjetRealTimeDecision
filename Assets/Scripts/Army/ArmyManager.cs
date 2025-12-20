@@ -104,16 +104,35 @@ public abstract class ArmyManager : MonoBehaviour
     {
         return m_ArmyElements
             .OfType<HealingTurretStatic>()
+            .Where(t => t != null)
             .OrderBy(t => Vector3.Distance(fromPosition, t.transform.position))
             .FirstOrDefault();
 
 
     }
 
+        public Drone GetClosestAllyWithoutShield(Vector3 fromPosition, ArmyElement excludeElement, float maxRange)
+        {
+            return m_ArmyElements
+                .OfType<Drone>()
+                .Where(d => d != null && d != excludeElement)  // Filter out destroyed/null drones
+                .Where(d => {
+                    if (d == null) return false;  // Double-check for null
+                    float distance = Vector3.Distance(fromPosition, d.transform.position);
+                    return distance <= maxRange;
+                })
+                .Where(d => {
+                    Shield shield = d.GetComponent<Shield>();
+                    return shield == null || !shield.HasShield;
+                })
+                .OrderBy(d => Vector3.Distance(fromPosition, d.transform.position))
+                .FirstOrDefault();
+        }
+
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
 	{
         nDrones = m_ArmyElements.Count(item => item is Drone);
-        nTurrets = m_ArmyElements.Count(item => item is Turret || item is HealingTurret);
+        nTurrets = m_ArmyElements.Count(item => item is Turret || item is HealingTurret || item is HealingTurretStatic);
         cumulatedHealth = (int)m_ArmyElements.Sum(item => item.Health);
     }
 
@@ -150,6 +169,7 @@ public abstract class ArmyManager : MonoBehaviour
         m_NTurretsText.text = nTurrets.ToString() ;
         m_HealthText.text = health.ToString();
     }
+
 
     public virtual void ArmyElementHasBeenKilled(GameObject go)
     {
