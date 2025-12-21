@@ -49,10 +49,11 @@ public abstract class ArmyManager : MonoBehaviour
         // Get both regular turrets and healing turrets
         var regularTurrets = GetAllEnemiesOfType<Turret>(false);
         var healingTurrets = GetAllEnemiesOfType<HealingTurret>(false);
-
+        var healingTurretsStatic = GetAllEnemiesOfType<HealingTurretStatic>(false);
         // Combine them
         var allTurrets = regularTurrets.Cast<ArmyElement>()
             .Concat(healingTurrets.Cast<ArmyElement>())
+            .Concat(healingTurretsStatic.Cast<ArmyElement>())
             .Where(item => Vector3.Distance(centerPos, item.transform.position) > minRadius
                         && Vector3.Distance(centerPos, item.transform.position) < maxRadius)
             .ToList();

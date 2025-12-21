@@ -55,9 +55,6 @@ public class Health : MonoBehaviour
 
             if (m_Health <= 0)
             {
-                if (m_OnDieEvent != null)
-                    m_OnDieEvent.Invoke();
-
                 if (owner != null)
                     owner.Die();
             }

@@ -21,11 +21,12 @@ public class HealingTurret : ArmyElement
 	Transform NextSpawnPoint { get { return m_SpawnPoints[(m_CurrSpawnIndex++) % m_SpawnPoints.Length]; } }
 
 	IEnumerator m_RotationCoroutine = null;
-
+    ArmyManager m_Manager;
 
 	// Use this for initialization
 	IEnumerator Start()
 	{
+	    m_Manager = GetComponent<IArmyElement>().ArmyManager;
 		yield break;
 	}
 

@@ -129,15 +129,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 339549609398137198, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 339549609398137198, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2229378608176355572, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: m_Name
       value: HealingTurretRed
+      objectReference: {fileID: 0}
+    - target: {fileID: 2229378608176355572, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -178,6 +182,18 @@ PrefabInstance:
     - target: {fileID: 2233187782191329132, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327147499843344142, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327147499843344142, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2327147499843344142, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6670003371116061860, guid: 264b119e2ff9bec4292f19fc949a799d, type: 3}
       propertyPath: mBehaviorSource.mTaskData.Version
@@ -1030,10 +1046,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472342016932, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472342016932, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_TagString
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3957337472342016943, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472342016943, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
@@ -1042,23 +1062,23 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: b399bdd25940fe543b8276d4c724235d, type: 2}
     - target: {fileID: 3957337472407518571, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472407518571, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472407518571, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472974719439, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3957337472974719439, guid: a317d61727fe3420587a3e8d123c3c0c, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6741,7 +6761,6 @@ GameObject:
   - component: {fileID: 1327907766}
   - component: {fileID: 1327907765}
   - component: {fileID: 1327907764}
-  - component: {fileID: 1327907767}
   m_Layer: 5
   m_Name: start
   m_TagString: Untagged
@@ -6863,18 +6882,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327907762}
   m_CullTransparentMesh: 1
---- !u!114 &1327907767
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1327907762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73e1c79641d4d394a9e2538a916667c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1332269038
 PrefabInstance:
   m_ObjectHideFlags: 0
