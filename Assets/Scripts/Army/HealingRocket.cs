@@ -76,10 +76,6 @@ public class HealingRocket : MonoBehaviour
                     health.RestoreHealth(m_HealingPoints);
                     float healthAfter = health.Value;
                     float actualHealing = healthAfter - healthBefore;
-
-                    Debug.Log($"[HealingRocket] Healed {item.gameObject.name} for {actualHealing} HP ({healthBefore:F0} → {healthAfter:F0})");
-
-                    // Spawn healing aura on the healed unit
                     SpawnHealingAura(item.transform);
                 }
             }

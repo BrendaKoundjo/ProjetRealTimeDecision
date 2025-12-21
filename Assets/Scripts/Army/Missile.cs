@@ -30,7 +30,7 @@ public class Missile : MonoBehaviour
         if (TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(m_Transform.position, ref posOnTerrain,ref normalOnTerrain))
         {
             m_InitHeightFromGround = Vector3.Distance(posOnTerrain, m_Transform.position);
-            //Debug.Log("m_InitHeightFromGround = " + m_InitHeightFromGround);
+
         }
         else Destroy(gameObject);
 
@@ -41,7 +41,7 @@ public class Missile : MonoBehaviour
         this.m_TranslationSpeed = startSpeed;
 	}
 
-    // Update is called once per frame
+
     void FixedUpdate()
     {        
         m_TranslationSpeed = Mathf.Min(m_TranslationMaxSpeed, m_TranslationSpeed + Time.fixedDeltaTime * m_Acceleration);
@@ -52,7 +52,7 @@ public class Missile : MonoBehaviour
 
         if (TerrainManager.Instance.GetVerticallyAlignedPositionOnTerrain(nextPosition, ref nextPosition,ref normalOnTerrain))
         {
-            //position
+
             nextPosition += Vector3.up * m_InitHeightFromGround;
             
             if(Vector3.Distance(nextPosition,m_Rigidbody.position)>0)

@@ -70,7 +70,6 @@ public class DroneSeekHealingTurret : Action
 
         if (!agent.pathPending && agent.remainingDistance <= stopDistance.Value)
         {
-            Debug.Log($"{gameObject.name}: arrivé à la tourelle de soin");
             agent.isStopped = true;
             return TaskStatus.Success;
         }

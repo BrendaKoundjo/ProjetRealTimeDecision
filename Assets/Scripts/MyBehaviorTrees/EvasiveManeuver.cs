@@ -66,7 +66,6 @@ public class EvasiveManeuver : Action
 
         if (threat != null)
         {
-            Debug.Log("[EvasiveManeuver] Lancement de l'esquive !");
             StartCoroutine(PerformDodge(threat));
             return TaskStatus.Running;
         }
@@ -103,7 +102,6 @@ public class EvasiveManeuver : Action
             yield break;
         }
 
-        Debug.Log($"[EvasiveManeuver] Destination choisie : {chosen}");
         agent.SetDestination(chosen);
 
         yield return new WaitForSeconds(dodgeDuration.Value);

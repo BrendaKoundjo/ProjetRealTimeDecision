@@ -28,11 +28,8 @@ public class ApplyShield : Action
 
         if (success)
         {
-            Debug.Log("[ApplyShield] Shield applied successfully!");
             return TaskStatus.Success;
         }
-
-        Debug.Log("[ApplyShield] Failed to apply shield (cooldown or no target) - continuing anyway");
         return TaskStatus.Running;
     }
 }

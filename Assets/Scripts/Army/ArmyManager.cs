@@ -7,6 +7,7 @@ using System.Linq;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
+
 /*
 Pr�parer un terrain o� toutes les terrasses sont accessibles
 */
@@ -23,6 +24,8 @@ public abstract class ArmyManager : MonoBehaviour
     [SerializeField] TMP_Text m_HealthText;
 
     [SerializeField] UnityEvent m_OnArmyIsDead;
+    [SerializeField] GameObject enemyDronePrefab;
+    [SerializeField] Transform[] spawnPoints;
 
     protected List<T> GetAllEnemiesOfType<T>(bool sortRandom) where T : ArmyElement
     {
@@ -76,6 +79,39 @@ public abstract class ArmyManager : MonoBehaviour
         }
 
         return closest;
+    }
+
+    public void SpawnExtraDrones(int count)
+    {
+        if (spawnPoints == null || spawnPoints.Length == 0)
+        {
+            Debug.LogError("[ArmyManager] No spawn points assigned! Cannot spawn drones.");
+            return;
+        }
+
+        if (enemyDronePrefab == null)
+        {
+            Debug.LogError("[ArmyManager] No enemy drone prefab assigned!");
+            return;
+        }
+
+        for (int i = 0; i < count; i++)
+        {
+            Transform spawn = spawnPoints[i % spawnPoints.Length];
+            GameObject go = Instantiate(enemyDronePrefab, spawn.position, spawn.rotation);
+
+            var element = go.GetComponent<IArmyElement>();
+            if (element != null)
+            {
+                RegisterArmyElement(element);
+
+                string elementName = (element as MonoBehaviour)?.name ?? "Unknown";
+            }
+            else
+            {
+                Debug.LogWarning($"[ArmyManager] Spawned object has no IArmyElement component at position {spawn.position}");
+            }
+        }
     }
 
 
