@@ -135,10 +135,44 @@ public abstract class ArmyManager : MonoBehaviour
 
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
 	{
-        nDrones = m_ArmyElements.Count(item => item is Drone);
+	    PrintAllArmyElements();
+        nDrones = m_ArmyElements.Count(item => item is Drone || item is FlyingDrone);
         nTurrets = m_ArmyElements.Count(item => item is Turret || item is HealingTurret || item is HealingTurretStatic);
-        cumulatedHealth = (int)m_ArmyElements.Sum(item => item.Health);
+        cumulatedHealth = (int)m_ArmyElements.OfType<ArmyElement>().Sum(item => item.Health);
     }
+
+    public void PrintAllArmyElements()
+    {
+        Debug.Log($"[ArmyManager] Listing all army elements ({m_ArmyElements.Count} total):");
+
+        foreach (var element in m_ArmyElements)
+        {
+            if (element == null)
+            {
+                Debug.Log("[ArmyManager] Null element in army list!");
+                continue;
+            }
+
+            string elementName = (element as MonoBehaviour)?.name ?? "Unknown";
+            string elementType = element.GetType().Name;
+
+            float health = 0;
+            bool hasShield = false;
+
+            var armyElement = element as ArmyElement;
+            if (armyElement != null && armyElement.Health != null)
+            {
+                health = armyElement.Health;
+            }
+
+            var shield = (element as MonoBehaviour)?.GetComponent<Shield>();
+            if (shield != null)
+                hasShield = shield.HasShield;
+
+            Debug.Log($"[ArmyManager] {elementName} | Type: {elementType} | Health: {health} | Shield: {hasShield}");
+        }
+    }
+
 
   public void Awake()
   {
@@ -153,8 +187,11 @@ public abstract class ArmyManager : MonoBehaviour
               continue;
           }
 
-          armyElement.ArmyManager = this;
-          m_ArmyElements.Add(armyElement);
+          if (!m_ArmyElements.Contains(armyElement))
+                 {
+                     armyElement.ArmyManager = this;
+                     m_ArmyElements.Add(armyElement);
+                 }
       }
   }
 
