@@ -23,7 +23,7 @@ public class Health : MonoBehaviour
 
             if (owner == null)
             {
-                Debug.LogError($"[Health] Aucun ArmyElement parent pour {name}");
+                Debug.LogError($"[Health] Aucun ArmyElement parent pour {owner?.name ?? name}");
             }
         }
 
@@ -39,20 +39,36 @@ public class Health : MonoBehaviour
 	}
 
 	public void InflictDamage(float damage)
-	{
-	    var shield = GetComponent<Shield>();
-        if (shield != null)
         {
-            damage = shield.AbsorbDamage(damage);
+            Debug.Log($"[Health] {owner?.name ?? name} receiving damage: {damage}");
+
+            var shield = GetComponentInParent<Shield>();
+            if (shield != null)
+            {
+                float damageBefore = damage;
+                damage = shield.AbsorbDamage(damage);
+                Debug.Log($"[Health] {owner?.name ?? name} shield absorbed {damageBefore - damage}, damage remaining: {damage}");
+            }
+            else
+            {
+                Debug.Log($"[Health] {owner?.name ?? name} has NO shield");
+            }
+
+            m_Health = Mathf.Max(m_Health - damage, 0);
+            Debug.Log($"[Health] {owner?.name ?? name} new health: {m_Health}");
+
+            RefreshHealthDisplay();
+
+            if (m_Health <= 0)
+            {
+                Debug.Log($"[Health] {owner?.name ?? name} died!");
+                if (m_OnDieEvent != null)
+                    m_OnDieEvent.Invoke();
+
+                if (owner != null)
+                    owner.Die();
+            }
         }
-
-		m_Health = Mathf.Max(m_Health - damage, 0);
-		RefreshHealthDisplay();
-
-		if (m_Health <= 0 && m_OnDieEvent != null) {
-	        owner.Die();
-	         };
-	}
 
 	public void RestoreHealth(float healAmount)
 	{
@@ -62,7 +78,7 @@ public class Health : MonoBehaviour
 
 	 public void Heal(float amount)
     {
-        if (m_Health <= 0) return; 
+        if (m_Health <= 0) return;
         m_Health = Mathf.Min(m_Health + amount, m_StartHealth);
         RefreshHealthDisplay();
     }

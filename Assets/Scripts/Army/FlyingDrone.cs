@@ -1,15 +1,24 @@
 using UnityEngine;
 using System.Linq;
+using System.Collections.Generic;
 
 public class FlyingDrone : ArmyElement
 {
     [SerializeField] float shieldAmount = 40f;
-    [SerializeField] float shieldRange = 8f;  // Increased from 6m to 8m to work with 5m arrive distance
+    [SerializeField] float shieldRange = 50f;
     [SerializeField] float shieldCooldown = 3f;
     [SerializeField] bool extendHitboxForGroundProjectiles = true;
     [SerializeField] float hitboxHeight = 3.5f;
     [SerializeField] float hitboxRadius = 0.75f;
     [SerializeField] float hitboxOffsetY = -1.5f;
+    [SerializeField] float maxRelativeSpeedToShield = 4f;
+    [SerializeField] float minFollowTimeBeforeShield = 0.4f;
+    [SerializeField] float retargetCooldownAfterTimeout = 2.5f;
+
+    Dictionary<Transform, float> timedOutTargets = new Dictionary<Transform, float>();
+
+    Transform currentShieldTarget;
+    float followStartTime;
 
     float lastShieldTime;
 
@@ -17,7 +26,6 @@ public class FlyingDrone : ArmyElement
 
     private void OnEnable()
     {
-        Debug.Log($"[FlyingDrone] {name} OnEnable called. ArmyManager: {(ArmyManager != null ? "SET" : "NULL")}");
         // Make sure we register with army manager
         base.OnEnable();
 
@@ -32,46 +40,63 @@ public class FlyingDrone : ArmyElement
         Debug.Log($"[FlyingDrone] {name} Start - ArmyManager: {(ArmyManager != null ? ArmyManager.ArmyTag : "NULL")}");
     }
 
-    public bool TryShieldAlly()
+   public bool TryShieldAlly()
+   {
+       if (!CanShield || ArmyManager == null || currentShieldTarget == null)
+           return false;
+
+       Vector3 a = transform.position;
+       Vector3 b = currentShieldTarget.position;
+       a.y = 0;
+       b.y = 0;
+
+       float dist = Vector3.Distance(a, b);
+       if (dist > shieldRange)
+           return false;
+
+       Rigidbody targetRb = currentShieldTarget.GetComponent<Rigidbody>();
+       Rigidbody selfRb = GetComponent<Rigidbody>();
+
+       if (targetRb != null && selfRb != null)
+       {
+           float relativeSpeed = (targetRb.linearVelocity - selfRb.linearVelocity).magnitude;
+           if (relativeSpeed > maxRelativeSpeedToShield)
+               return false;
+       }
+
+       if (Time.time - followStartTime < minFollowTimeBeforeShield)
+           return false;
+
+
+       Turret ally = currentShieldTarget.GetComponent<Turret>();
+       if (ally == null)
+           return false;
+
+       Shield shield = ally.GetComponent<Shield>();
+       if (shield == null || shield.HasShield)
+           return false;
+
+       shield.ApplyShield(shieldAmount);
+       lastShieldTime = Time.time;
+
+       Debug.Log($"[FlyingDrone] {name} shielded {ally.name}");
+
+       currentShieldTarget = null;
+
+       return true;
+   }
+
+
+
+    public void SetShieldTarget(Transform target)
     {
-        if (!CanShield || ArmyManager == null)
+        if (currentShieldTarget != target)
         {
-            if (ArmyManager == null)
-                Debug.LogWarning($"[FlyingDrone] {name}: ArmyManager is NULL!");
-            if (!CanShield)
-                Debug.Log($"[FlyingDrone] {name}: Shield on cooldown. Time until ready: {shieldCooldown - (Time.time - lastShieldTime):F2}s");
-            return false;
+            currentShieldTarget = target;
+            followStartTime = Time.time;
         }
-
-        // Use the proper ArmyManager method that queries m_ArmyElements
-        var ally = ArmyManager.GetClosestAllyWithoutShield(transform.position, this, shieldRange);
-
-        if (ally == null)
-        {
-            Debug.Log($"[FlyingDrone] {name}: No unshielded allies within {shieldRange}m");
-            return false;
-        }
-
-        Shield shield = ally.GetComponent<Shield>();
-        if (shield == null)
-        {
-            Debug.LogWarning($"[FlyingDrone] {name}: Target {ally.name} has no Shield component!");
-            return false;
-        }
-
-        if (shield.HasShield)
-        {
-            Debug.Log($"[FlyingDrone] {name}: {ally.name} already has shield, skipping");
-            return false;
-        }
-
-        // Apply shield and start cooldown
-        shield.ApplyShield(shieldAmount);
-        lastShieldTime = Time.time;
-
-        Debug.Log($"[FlyingDrone] {name} successfully shielded {ally.name} with {shieldAmount} shield points at distance {Vector3.Distance(transform.position, ally.transform.position):F2}m");
-        return true;
     }
+
 
     void EnsureHitboxCollider()
     {
@@ -99,4 +124,29 @@ public class FlyingDrone : ArmyElement
         col.height = hitboxHeight;
         col.center = new Vector3(0f, hitboxOffsetY, 0f);
     }
+    public void RegisterTargetTimeout(Transform target)
+    {
+        if (target == null)
+            return;
+
+        timedOutTargets[target] = Time.time;
+    }
+
+    public bool IsTargetTimedOut(Transform target)
+    {
+        if (target == null)
+            return false;
+
+        if (!timedOutTargets.TryGetValue(target, out float time))
+            return false;
+
+        if (Time.time - time > retargetCooldownAfterTimeout)
+        {
+            timedOutTargets.Remove(target);
+            return false;
+        }
+
+        return true;
+    }
+
 }

@@ -36,8 +36,6 @@ public class ApplyShield : Action
         }
 
         Debug.Log("[ApplyShield] Failed to apply shield (cooldown or no target) - continuing anyway");
-        // Return Running instead of Failure so Parallel Complete doesn't fail
-        // This allows the drone to keep orbiting while waiting for cooldown
         return TaskStatus.Running;
     }
 }

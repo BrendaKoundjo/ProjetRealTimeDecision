@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3692098336489702634}
   - component: {fileID: 3692098336489702619}
   - component: {fileID: 3692098336489702618}
-  - component: {fileID: 7221467957627302261}
   m_Layer: 0
   m_Name: DroneGreen
   m_TagString: 2
@@ -149,20 +148,6 @@ MonoBehaviour:
   m_MissileSpawnPos:
   - {fileID: 4600591780626512261}
   - {fileID: 4600591778951595938}
---- !u!114 &7221467957627302261
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3692098336489702635}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5b0ab7687d6ca0498f56f98e861bbbd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxShield: 50
-  duration: 5
 --- !u!1 &4600591778951595939
 GameObject:
   m_ObjectHideFlags: 0

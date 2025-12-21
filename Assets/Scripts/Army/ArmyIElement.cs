@@ -39,7 +39,6 @@ public abstract class ArmyElement : MonoBehaviour, IArmyElement
 
 	public void Die()
     {
-        Debug.Log($"Die() appelé sur {name} | scene={gameObject.scene.name}");
         if (ArmyManager != null)
             ArmyManager.ArmyElementHasBeenKilled(gameObject);
         else

@@ -9,7 +9,7 @@ using System.Linq;
 public class SelectClosestAllyWithoutShield : Action
 {
     public SharedTransform target;
-    public float range = 10f;
+    public float range = 50f;
 
     FlyingDrone drone;
 
@@ -18,8 +18,6 @@ public class SelectClosestAllyWithoutShield : Action
         drone = GetComponent<FlyingDrone>();
         if (drone == null)
             Debug.LogError("[SelectClosestAlly] No FlyingDrone component found!");
-        else
-            Debug.Log("[SelectClosestAlly] OnStart - FlyingDrone found");
     }
 
     public override TaskStatus OnUpdate()

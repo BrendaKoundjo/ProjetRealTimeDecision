@@ -113,6 +113,7 @@ public class Shield : MonoBehaviour
 
         float absorbed = Mathf.Min(currentShield, damage);
         currentShield -= absorbed;
+        Debug.Log($"[Shield] Absorbed {absorbed}, remaining shield: {currentShield}");
         UpdateShieldVisual();
         return damage - absorbed;
     }

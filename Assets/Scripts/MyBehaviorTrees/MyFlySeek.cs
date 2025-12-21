@@ -6,20 +6,20 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
     [TaskCategory("Movement")]
     [HelpURL("https://www.opsive.com/support/documentation/behavior-designer-movement-pack/")]
     [TaskIcon("Assets/Behavior Designer Movement/Editor/Icons/{SkinColor}SeekIcon.png")]
-    public class MyFlySeek : Action//Movement
+    public class MyFlySeek : Action
     {
         [Tooltip("The GameObject that the agent is seeking")]
         public SharedTransform m_Target;
 		[Tooltip("The ground layers to raycast in order to compute the offset height above the ground")]
 		public LayerMask m_GroundLayers;
 		[Tooltip("The max speed of the agent")]
-		public float m_TranslationMaxSpeed = 3;  // Reduced for smoother movement
+		public float m_TranslationMaxSpeed = 3;
 		[Tooltip("The acceleration of the agent")]
-		public float m_LinearAcceleration = 3;   // Reduced for smoother movement
+		public float m_LinearAcceleration = 3;
 		[Tooltip("The angular speed of the agent")]
 		public float m_AngularSpeed = 90;
 
-		public float m_ArriveDistance = 5f;  // Stopping distance - shield drone stays 5m away
+		public float m_ArriveDistance = 10f;  // Stopping distance - shield drone stays 5m away
 		public float m_ArriveAngle = 1;
 		public float m_MinHeightAboveGround = 3f;  // Minimum height to prevent ground clipping
 
@@ -31,6 +31,8 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 		Transform m_LastTarget;
 		float m_TargetStartTime;
 
+        Rigidbody m_TargetRb;
+        FlyingDrone m_FlyingDrone;
 
 		Rigidbody m_Rigidbody;
 		Transform m_Transform;
@@ -38,8 +40,13 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 		public override void OnAwake()
 		{
 			m_Rigidbody = GetComponent<Rigidbody>();
+			m_FlyingDrone = GetComponent<FlyingDrone>();
 			m_Transform = transform;
 			m_TranslationSpeed = 0;
+
+			if (m_Target.Value != null)
+                m_TargetRb = m_Target.Value.GetComponent<Rigidbody>();
+
 
 			if (m_Rigidbody == null)
 				Debug.LogError($"[MyFlySeek] {transform.name}: No Rigidbody found!");
@@ -55,7 +62,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				m_InitHeightFromGround = m_MinHeightAboveGround;
 			}
 
-			Debug.Log($"[MyFlySeek] {transform.name}: Init height = {m_InitHeightFromGround}m");
 			m_LastTarget = m_Target.Value;
 			m_TargetStartTime = Time.time;
 		}
@@ -81,6 +87,19 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 			return HasArrivedTranslation() && HasArrivedRotation();
 		}
 
+		Vector3 GetInterceptPoint()
+        {
+            if (m_TargetRb == null)
+                return m_Target.Value.position;
+
+            float distance = Vector3.Distance(m_Transform.position, m_Target.Value.position);
+            float speed = Mathf.Max(m_TranslationSpeed, 1f);
+            float time = distance / speed;
+
+            return m_Target.Value.position + m_TargetRb.linearVelocity * time;
+        }
+
+
 		// Seek the destination. Return success once the agent has reached the destination.
 		// Return running if the agent hasn't reached the destination yet
 		public override TaskStatus OnUpdate()
@@ -91,6 +110,14 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				return TaskStatus.Failure;
 			}
 
+            if (m_TargetRb == null || m_TargetRb.transform != m_Target.Value){
+                m_TargetRb = m_Target.Value.GetComponent<Rigidbody>();
+            }
+
+            m_FlyingDrone?.SetShieldTarget(m_Target.Value);
+
+
+
 			// Reset timer when target changes
 			if (m_Target.Value != m_LastTarget)
 			{
@@ -98,7 +125,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				m_TargetStartTime = Time.time;
 			}
 
-			Debug.Log($"[MyFlySeek] {transform.name}: Moving toward {m_Target.Value.name}. Distance: {Vector3.Distance(transform.position, m_Target.Value.position):F2}m");
 
             if (HasArrived())
 			{
@@ -106,13 +132,16 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				return TaskStatus.Success;
 			}
 
-			// Give up after timeout to allow reselection
-			if (Time.time - m_TargetStartTime > m_MaxPursuitTime)
-			{
-				Debug.Log($"[MyFlySeek] {transform.name}: Pursuit timed out after {m_MaxPursuitTime}s, giving up target {m_LastTarget?.name}");
-				m_Target.Value = null; // Encourage selector to pick a new target
-				return TaskStatus.Failure;
-			}
+            if (Time.time - m_TargetStartTime > m_MaxPursuitTime)
+            {
+                Debug.Log($"[MyFlySeek] {transform.name}: Pursuit timed out after {m_MaxPursuitTime}s, giving up target {m_LastTarget?.name}");
+
+                m_FlyingDrone?.RegisterTargetTimeout(m_LastTarget);
+
+                m_Target.Value = null;
+                return TaskStatus.Failure;
+            }
+
 
             return TaskStatus.Running;
         }
@@ -139,20 +168,34 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 					if (move.sqrMagnitude > 0)
 						m_Rigidbody.MovePosition(m_Rigidbody.position + move.normalized * dist);
 				}
+
 			}
+			else if (m_TargetRb != null)
+                {
+                    m_Rigidbody.linearVelocity = Vector3.Lerp(
+                        m_Rigidbody.linearVelocity,
+                        m_TargetRb.linearVelocity,
+                        0.15f
+                    );
+                }
 
 			if (!HasArrivedRotation())
 			{
-				//orientation - look horizontally at target, not down
-				Vector3 targetDir = m_Target.Value.position - m_Transform.position;
-				targetDir.y = 0;  // Keep rotation horizontal only
+				Vector3 targetPos = GetInterceptPoint();
+                Vector3 dir = targetPos - m_Transform.position;
+                dir.y = 0;
 
-				if (targetDir.sqrMagnitude > 0.01f)
-				{
-					Quaternion targetQ = Quaternion.LookRotation(targetDir.normalized);
-					Quaternion newtOrientation = Quaternion.RotateTowards(m_Transform.rotation, targetQ, m_AngularSpeed * Time.fixedDeltaTime);
-					m_Rigidbody.MoveRotation(newtOrientation);
-				}
+                if (dir.sqrMagnitude > 0.1f)
+                {
+                    Quaternion targetRot = Quaternion.LookRotation(dir.normalized);
+                    Quaternion newRot = Quaternion.RotateTowards(
+                        m_Transform.rotation,
+                        targetRot,
+                        m_AngularSpeed * Time.fixedDeltaTime
+                    );
+                    m_Rigidbody.MoveRotation(newRot);
+                }
+
 			}
 		}
 

@@ -46,7 +46,7 @@ public abstract class ArmyManager : MonoBehaviour
         // Get both regular turrets and healing turrets
         var regularTurrets = GetAllEnemiesOfType<Turret>(false);
         var healingTurrets = GetAllEnemiesOfType<HealingTurret>(false);
-        
+
         // Combine them
         var allTurrets = regularTurrets.Cast<ArmyElement>()
             .Concat(healingTurrets.Cast<ArmyElement>())
@@ -59,7 +59,7 @@ public abstract class ArmyManager : MonoBehaviour
 
         return allTurrets.FirstOrDefault()?.gameObject;
     }
-    
+
     public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
     {
         GameObject closest = null;
@@ -78,7 +78,7 @@ public abstract class ArmyManager : MonoBehaviour
         return closest;
     }
 
- 
+
     private Dictionary<IArmyElement, GameObject> currentTarget = new Dictionary<IArmyElement, GameObject>();
 
     public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius)
@@ -111,23 +111,27 @@ public abstract class ArmyManager : MonoBehaviour
 
     }
 
-        public Drone GetClosestAllyWithoutShield(Vector3 fromPosition, ArmyElement excludeElement, float maxRange)
+        public Turret GetClosestAllyWithoutShield(Vector3 fromPosition, FlyingDrone requester, float maxRange)
         {
+
             return m_ArmyElements
-                .OfType<Drone>()
-                .Where(d => d != null && d != excludeElement)  // Filter out destroyed/null drones
-                .Where(d => {
-                    if (d == null) return false;  // Double-check for null
+                .OfType<Turret>()
+                .Where(d => d != null && d != requester)  // Filter out destroyed/null
+                .Where(d =>
+                {
                     float distance = Vector3.Distance(fromPosition, d.transform.position);
                     return distance <= maxRange;
                 })
-                .Where(d => {
+                .Where(d =>
+                {
                     Shield shield = d.GetComponent<Shield>();
                     return shield == null || !shield.HasShield;
                 })
+                .Where(d => !requester.IsTargetTimedOut(d.transform))
                 .OrderBy(d => Vector3.Distance(fromPosition, d.transform.position))
                 .FirstOrDefault();
         }
+
 
     protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
 	{
@@ -191,7 +195,7 @@ public abstract class ArmyManager : MonoBehaviour
         RefreshHudDisplay();
     }
 
-    
+
 }
 
 
@@ -205,7 +209,7 @@ public abstract class ArmyManager : MonoBehaviour
 public GameObject GetRandomNonTargetedEnemy<T>() where T : ArmyElement
 {
     var enemies = GetAllEnemiesOfType<T>(true);
-    return enemies.Where(item => 
+    return enemies.Where(item =>
             !m_DicoWhoTargetsWhom.ContainsValue(item.gameObject)
             ).FirstOrDefault()?.gameObject;
 }

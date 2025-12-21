@@ -211,6 +211,7 @@ GameObject:
   - component: {fileID: 2262733282072818340}
   - component: {fileID: 2230361028407880562}
   - component: {fileID: 6670003371116061860}
+  - component: {fileID: -8063587719795360346}
   m_Layer: 0
   m_Name: TurretRed
   m_TagString: 1
@@ -318,6 +319,22 @@ MonoBehaviour:
       Version: 
   gizmoViewMode: 2
   showBehaviorDesignerGizmo: 1
+--- !u!114 &-8063587719795360346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2229378608176355572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5b0ab7687d6ca0498f56f98e861bbbd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxShield: 50
+  duration: 10
+  showVisualIndicator: 1
+  bubbleScale: 2
 --- !u!1 &2229378609485399760
 GameObject:
   m_ObjectHideFlags: 0
