@@ -90,7 +90,6 @@ public class Shield : MonoBehaviour
     public void ApplyShield(float amount)
     {
         currentShield = Mathf.Min(maxShield, currentShield + amount);
-        Debug.Log($"[Shield] {gameObject.name} received shield: +{amount}, total: {currentShield}/{maxShield}");
 
         if (shieldRoutine != null)
             StopCoroutine(shieldRoutine);
@@ -113,7 +112,6 @@ public class Shield : MonoBehaviour
 
         float absorbed = Mathf.Min(currentShield, damage);
         currentShield -= absorbed;
-        Debug.Log($"[Shield] Absorbed {absorbed}, remaining shield: {currentShield}");
         UpdateShieldVisual();
         return damage - absorbed;
     }

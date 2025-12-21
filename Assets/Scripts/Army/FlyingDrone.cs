@@ -37,7 +37,7 @@ public class FlyingDrone : ArmyElement
 
     private void Start()
     {
-        Debug.Log($"[FlyingDrone] {name} Start - ArmyManager: {(ArmyManager != null ? ArmyManager.ArmyTag : "NULL")}");
+
     }
 
    public bool TryShieldAlly()
@@ -79,7 +79,6 @@ public class FlyingDrone : ArmyElement
        shield.ApplyShield(shieldAmount);
        lastShieldTime = Time.time;
 
-       Debug.Log($"[FlyingDrone] {name} shielded {ally.name}");
 
        currentShieldTarget = null;
 

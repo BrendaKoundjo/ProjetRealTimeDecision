@@ -40,28 +40,21 @@ public class Health : MonoBehaviour
 
 	public void InflictDamage(float damage)
         {
-            Debug.Log($"[Health] {owner?.name ?? name} receiving damage: {damage}");
+
 
             var shield = GetComponentInParent<Shield>();
             if (shield != null)
             {
                 float damageBefore = damage;
                 damage = shield.AbsorbDamage(damage);
-                Debug.Log($"[Health] {owner?.name ?? name} shield absorbed {damageBefore - damage}, damage remaining: {damage}");
-            }
-            else
-            {
-                Debug.Log($"[Health] {owner?.name ?? name} has NO shield");
             }
 
             m_Health = Mathf.Max(m_Health - damage, 0);
-            Debug.Log($"[Health] {owner?.name ?? name} new health: {m_Health}");
 
             RefreshHealthDisplay();
 
             if (m_Health <= 0)
             {
-                Debug.Log($"[Health] {owner?.name ?? name} died!");
                 if (m_OnDieEvent != null)
                     m_OnDieEvent.Invoke();
 

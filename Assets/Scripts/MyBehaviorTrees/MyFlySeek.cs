@@ -128,7 +128,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 
             if (HasArrived())
 			{
-				Debug.Log($"[MyFlySeek] {transform.name}: Arrived at target!");
+
 				return TaskStatus.Success;
 			}
 

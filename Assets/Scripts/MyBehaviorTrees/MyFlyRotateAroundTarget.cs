@@ -24,13 +24,11 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 
 			if (m_Rigidbody == null)
 				Debug.LogError($"[MyFlyRotateAroundTarget] {transform.name}: No Rigidbody found!");
-			else
-				Debug.Log($"[MyFlyRotateAroundTarget] {transform.name}: Initialized");
 		}
 
 		public override void OnStart()
         {
-			Debug.Log($"[MyFlyRotateAroundTarget] {transform.name}: OnStart called");
+
         }
 
         // Seek the destination. Return success once the agent has reached the destination.
@@ -43,7 +41,6 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
 				return TaskStatus.Failure;
 			}
 
-			Debug.Log($"[MyFlyRotateAroundTarget] {transform.name}: Rotating around {m_Target.Value.name}");
             return TaskStatus.Running;
         }
 

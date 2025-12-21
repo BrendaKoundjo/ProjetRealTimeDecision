@@ -14,8 +14,6 @@ public class ApplyShield : Action
         drone = GetComponent<FlyingDrone>();
         if (drone == null)
             Debug.LogError("[ApplyShield] No FlyingDrone component found!");
-        else
-            Debug.Log("[ApplyShield] OnStart - FlyingDrone found");
     }
 
     public override TaskStatus OnUpdate()
@@ -26,7 +24,6 @@ public class ApplyShield : Action
             return TaskStatus.Failure;
         }
 
-        Debug.Log("[ApplyShield] Attempting to shield ally...");
         bool success = drone.TryShieldAlly();
 
         if (success)
