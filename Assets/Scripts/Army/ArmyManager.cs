@@ -118,18 +118,64 @@ public abstract class ArmyManager : MonoBehaviour
 
     private Dictionary<IArmyElement, GameObject> currentTarget = new Dictionary<IArmyElement, GameObject>();
 
-    public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius)
+    public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius, float maxFollowDistance)
     {
+        GameObject existingTarget = null;
 
-        if (currentTarget.ContainsKey(self) && currentTarget[self] != null)
-            return currentTarget[self];
+        if (currentTarget.ContainsKey(self))
+            existingTarget = currentTarget[self];
 
-        GameObject newTarget = GetClosestEnemyAny(fromPosition, minRadius, maxRadius);
-        if (newTarget != null)
-            currentTarget[self] = newTarget;
+        bool needNewTarget = false;
 
-        return newTarget;
+        if (existingTarget != null)
+        {
+            float distance = Vector3.Distance(fromPosition, existingTarget.transform.position);
+
+            // Si la cible est trop loin, on la libère
+            if (distance > maxFollowDistance)
+            {
+                Debug.Log($"[ArmyManager] Target too far ({distance:F1}m). Unlocking for {((MonoBehaviour)self).name} (was targeting {existingTarget.name})");
+                currentTarget.Remove(self);
+                existingTarget = null;
+                needNewTarget = true;
+            }
+            else
+            {
+                // Vérifie si la cible est toujours dans la zone de recherche
+                if (distance < minRadius || distance > maxRadius)
+                {
+                    Debug.Log($"[ArmyManager] Target {existingTarget.name} out of detection zone ({distance:F1}m). Re-selecting...");
+                    currentTarget.Remove(self);
+                    existingTarget = null;
+                    needNewTarget = true;
+                }
+            }
+        }
+        else
+        {
+            needNewTarget = true;
+        }
+
+        // Sélectionne une nouvelle cible si nécessaire
+        if (needNewTarget)
+        {
+            GameObject newTarget = GetClosestEnemyAny(fromPosition, minRadius, maxRadius);
+            if (newTarget != null)
+            {
+                currentTarget[self] = newTarget;
+                Debug.Log($"[ArmyManager] New target assigned for {((MonoBehaviour)self).name}: {newTarget.name}");
+                return newTarget;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        return existingTarget;
     }
+
+
+
 
     public void UnlockTarget(IArmyElement self)
     {

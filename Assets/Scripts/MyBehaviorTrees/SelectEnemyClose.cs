@@ -11,6 +11,7 @@ public class SelectEnemyClose : Action
 	public SharedTransform target;
 	public SharedFloat minRadius;
 	public SharedFloat maxRadius;
+    public SharedFloat maxFollowDistance;
 
 	public override void OnAwake()
 	{
@@ -28,12 +29,13 @@ public class SelectEnemyClose : Action
 		//Debug.Log($"[SelectEnemyClose] Recherche d’un ennemi entre {minRadius.Value}m et {maxRadius.Value}m...");
 
 	
-		var enemy = m_ArmyElement.ArmyManager.LockOrGetCurrentTarget(
-		m_ArmyElement,
-		transform.position,
-		minRadius.Value,
-		maxRadius.Value
-		);
+        var enemy = m_ArmyElement.ArmyManager.LockOrGetCurrentTarget(
+            m_ArmyElement,
+            transform.position,
+            minRadius.Value,
+            maxRadius.Value,
+            maxFollowDistance.Value
+        );
 		target.Value = enemy?.transform;
 
 		if (enemy != null)
