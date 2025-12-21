@@ -76,6 +76,9 @@ public class HealingRocket : MonoBehaviour
                     health.RestoreHealth(m_HealingPoints);
                     float healthAfter = health.Value;
                     float actualHealing = healthAfter - healthBefore;
+
+
+                    // Spawn healing aura on the healed unit
                     SpawnHealingAura(item.transform);
                 }
             }
@@ -99,7 +102,7 @@ public class HealingRocket : MonoBehaviour
             GameObject fallbackAura = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             fallbackAura.transform.position = target.position + Vector3.up * 1f;
             fallbackAura.transform.localScale = Vector3.one * 0.5f;
-            
+
             // Make it green and transparent
             Renderer renderer = fallbackAura.GetComponent<Renderer>();
             if (renderer != null)
@@ -119,10 +122,10 @@ public class HealingRocket : MonoBehaviour
 
             // Remove collider
             Destroy(fallbackAura.GetComponent<Collider>());
-            
+
             // Add simple animation
             HealingAura auraScript = fallbackAura.AddComponent<HealingAura>();
-            
+
             // Attach to target
             fallbackAura.transform.SetParent(target);
         }

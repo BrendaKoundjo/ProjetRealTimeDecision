@@ -7,63 +7,101 @@ using System.Linq;
 using UnityEngine.AI;
 using UnityEngine.Events;
 
-
-/*
-Pr�parer un terrain o� toutes les terrasses sont accessibles
-*/
-
 public abstract class ArmyManager : MonoBehaviour
 {
+    /* ===================== IDENTITÉ DE L’ARMÉE ===================== */
+
+    // Tag Unity utilisé pour identifier les membres de cette armée
     [SerializeField] string m_ArmyTag;
     public string ArmyTag => m_ArmyTag;
+
+    // Couleur associée à l’armée (HUD / feedback visuel)
     [SerializeField] Color m_ArmyColor;
+
+    // Liste interne de tous les éléments de l’armée
     protected List<IArmyElement> m_ArmyElements = new List<IArmyElement>();
 
+    /* ========================= HUD ========================= */
+
+    // Affichage du nombre de drones
     [SerializeField] TMP_Text m_NDronesText;
+
+    // Affichage du nombre de tourelles
     [SerializeField] TMP_Text m_NTurretsText;
+
+    // Affichage de la vie totale de l’armée
     [SerializeField] TMP_Text m_HealthText;
 
+    /* ====================== ÉVÈNEMENTS ====================== */
+
+    // Évènement déclenché lorsque l’armée est totalement détruite
     [SerializeField] UnityEvent m_OnArmyIsDead;
+
+    /* ====================== SPAWN ====================== */
+
+    // Prefab du drone ennemi à instancier
     [SerializeField] GameObject enemyDronePrefab;
+
+    // Points possibles de spawn
     [SerializeField] Transform[] spawnPoints;
 
+    /* ==========================================================
+       =================== RECHERCHE D’ENNEMIS ==================
+       ========================================================== */
+
+
+    /// Retourne tous les ennemis d’un type donné
     protected List<T> GetAllEnemiesOfType<T>(bool sortRandom) where T : ArmyElement
     {
-        var enemies = GameObject.FindObjectsOfType<T>().Where(element => !element.gameObject.CompareTag(m_ArmyTag)).ToList();
-        if (sortRandom) enemies.Sort((a, b) => Random.value.CompareTo(.5f));
+        // Trouve tous les objets du type T qui n'ont PAS le tag de cette armée
+        var enemies = GameObject.FindObjectsOfType<T>()
+            .Where(element => !element.gameObject.CompareTag(m_ArmyTag))
+            .ToList();
+
+        // Mélange aléatoire si demandé
+        if (sortRandom)
+            enemies.Sort((a, b) => Random.value.CompareTo(.5f));
+
         return enemies;
     }
 
-    public GameObject GetRandomEnemy<T>(Vector3 centerPos, float minRadius, float maxRadius) where T : ArmyElement
+
+    /// Retourne un ennemi aléatoire d’un type donné dans un rayon
+    public GameObject GetRandomEnemy<T>(Vector3 centerPos, float minRadius, float maxRadius)
+        where T : ArmyElement
     {
-        var enemies = GetAllEnemiesOfType<T>(true).Where(
-            item => Vector3.Distance(centerPos, item.transform.position) > minRadius
-                    && Vector3.Distance(centerPos, item.transform.position) < maxRadius);
+        var enemies = GetAllEnemiesOfType<T>(true)
+            .Where(item =>
+                Vector3.Distance(centerPos, item.transform.position) > minRadius &&
+                Vector3.Distance(centerPos, item.transform.position) < maxRadius
+            );
 
         return enemies.FirstOrDefault()?.gameObject;
     }
 
-    // Get random enemy turret (includes both Turret and HealingTurret)
+
+    /// Retourne une tourelle ennemie aléatoire
+    /// (inclut toutes les variantes)
     public GameObject GetRandomEnemyAnyTurret(Vector3 centerPos, float minRadius, float maxRadius)
     {
-        // Get both regular turrets and healing turrets
-        var regularTurrets = GetAllEnemiesOfType<Turret>(false);
-        var healingTurrets = GetAllEnemiesOfType<HealingTurret>(false);
-        var healingTurretsStatic = GetAllEnemiesOfType<HealingTurretStatic>(false);
-        // Combine them
-        var allTurrets = regularTurrets.Cast<ArmyElement>()
-            .Concat(healingTurrets.Cast<ArmyElement>())
-            .Concat(healingTurretsStatic.Cast<ArmyElement>())
-            .Where(item => Vector3.Distance(centerPos, item.transform.position) > minRadius
-                        && Vector3.Distance(centerPos, item.transform.position) < maxRadius)
+        var allTurrets =
+            GetAllEnemiesOfType<Turret>(false).Cast<ArmyElement>()
+            .Concat(GetAllEnemiesOfType<HealingTurret>(false))
+            .Concat(GetAllEnemiesOfType<HealingTurretStatic>(false))
+            .Where(item =>
+                Vector3.Distance(centerPos, item.transform.position) > minRadius &&
+                Vector3.Distance(centerPos, item.transform.position) < maxRadius
+            )
             .ToList();
 
-        // Shuffle randomly
+        // Mélange aléatoire
         allTurrets.Sort((a, b) => Random.value.CompareTo(.5f));
 
         return allTurrets.FirstOrDefault()?.gameObject;
     }
 
+
+    /// Retourne l’ennemi le PLUS PROCHE dans un rayon
     public GameObject GetClosestEnemyAny(Vector3 fromPosition, float minRadius, float maxRadius)
     {
         GameObject closest = null;
@@ -72,6 +110,7 @@ public abstract class ArmyManager : MonoBehaviour
         foreach (var enemy in GetAllEnemiesOfType<ArmyElement>(false))
         {
             float dist = Vector3.Distance(fromPosition, enemy.transform.position);
+
             if (dist >= minRadius && dist <= maxRadius && dist < minDist)
             {
                 minDist = dist;
@@ -82,11 +121,17 @@ public abstract class ArmyManager : MonoBehaviour
         return closest;
     }
 
+    /* ==========================================================
+       ======================== SPAWN ===========================
+       ========================================================== */
+
+
+    /// Instancie des drones supplémentaires (utilisé par la difficulté)
     public void SpawnExtraDrones(int count)
     {
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("[ArmyManager] No spawn points assigned! Cannot spawn drones.");
+            Debug.LogError("[ArmyManager] No spawn points assigned!");
             return;
         }
 
@@ -104,21 +149,33 @@ public abstract class ArmyManager : MonoBehaviour
             var element = go.GetComponent<IArmyElement>();
             if (element != null)
             {
+                // Inscrit le drone dans l’armée
                 RegisterArmyElement(element);
-
-                string elementName = (element as MonoBehaviour)?.name ?? "Unknown";
             }
             else
             {
-                Debug.LogWarning($"[ArmyManager] Spawned object has no IArmyElement component at position {spawn.position}");
+                Debug.LogWarning("[ArmyManager] Spawned object has no IArmyElement");
             }
         }
     }
 
+    /* ==========================================================
+       ===================== CIBLAGE / LOCK =====================
+       ========================================================== */
 
-    private Dictionary<IArmyElement, GameObject> currentTarget = new Dictionary<IArmyElement, GameObject>();
+    // Dictionnaire : chaque unité → sa cible actuelle
+    private Dictionary<IArmyElement, GameObject> currentTarget = new();
 
-    public GameObject LockOrGetCurrentTarget(IArmyElement self, Vector3 fromPosition, float minRadius, float maxRadius, float maxFollowDistance)
+
+    /// Gère le verrouillage de cible :
+    /// - conserve la cible si valide
+    /// - en change si trop loin / hors zone
+    public GameObject LockOrGetCurrentTarget(
+        IArmyElement self,
+        Vector3 fromPosition,
+        float minRadius,
+        float maxRadius,
+        float maxFollowDistance)
     {
         GameObject existingTarget = null;
 
@@ -131,24 +188,13 @@ public abstract class ArmyManager : MonoBehaviour
         {
             float distance = Vector3.Distance(fromPosition, existingTarget.transform.position);
 
-            // Si la cible est trop loin, on la libère
-            if (distance > maxFollowDistance)
+            // Cible trop loin → abandon
+            if (distance > maxFollowDistance ||
+                distance < minRadius ||
+                distance > maxRadius)
             {
-                Debug.Log($"[ArmyManager] Target too far ({distance:F1}m). Unlocking for {((MonoBehaviour)self).name} (was targeting {existingTarget.name})");
                 currentTarget.Remove(self);
-                existingTarget = null;
                 needNewTarget = true;
-            }
-            else
-            {
-                // Vérifie si la cible est toujours dans la zone de recherche
-                if (distance < minRadius || distance > maxRadius)
-                {
-                    Debug.Log($"[ArmyManager] Target {existingTarget.name} out of detection zone ({distance:F1}m). Re-selecting...");
-                    currentTarget.Remove(self);
-                    existingTarget = null;
-                    needNewTarget = true;
-                }
             }
         }
         else
@@ -156,166 +202,130 @@ public abstract class ArmyManager : MonoBehaviour
             needNewTarget = true;
         }
 
-        // Sélectionne une nouvelle cible si nécessaire
         if (needNewTarget)
         {
             GameObject newTarget = GetClosestEnemyAny(fromPosition, minRadius, maxRadius);
             if (newTarget != null)
-            {
                 currentTarget[self] = newTarget;
-                Debug.Log($"[ArmyManager] New target assigned for {((MonoBehaviour)self).name}: {newTarget.name}");
-                return newTarget;
-            }
-            else
-            {
-                return null;
-            }
+
+            return newTarget;
         }
+
         return existingTarget;
     }
 
-
-
-
+    /// Libère explicitement la cible d’une unité
     public void UnlockTarget(IArmyElement self)
     {
         if (currentTarget.ContainsKey(self))
             currentTarget.Remove(self);
     }
 
+    /* ==========================================================
+       ======================= ALLIÉS ===========================
+       ========================================================== */
+
+
+    /// Trouve la tourelle de soin alliée la plus proche
     public HealingTurretStatic GetClosestHealingTurretStatic(Vector3 fromPosition)
     {
         return m_ArmyElements
             .OfType<HealingTurretStatic>()
-            .Where(t => t != null)
             .OrderBy(t => Vector3.Distance(fromPosition, t.transform.position))
             .FirstOrDefault();
-
-
     }
 
-        public Turret GetClosestAllyWithoutShield(Vector3 fromPosition, FlyingDrone requester, float maxRange)
+    /// <summary>
+    /// Trouve une tourelle alliée sans bouclier
+    /// </summary>
+    public Turret GetClosestAllyWithoutShield(
+        Vector3 fromPosition,
+        FlyingDrone requester,
+        float maxRange)
+    {
+        return m_ArmyElements
+            .OfType<Turret>()
+            .Where(t => t != requester)
+            .Where(t => Vector3.Distance(fromPosition, t.transform.position) <= maxRange)
+            .Where(t =>
+            {
+                Shield shield = t.GetComponent<Shield>();
+                return shield == null || !shield.HasShield;
+            })
+            .OrderBy(t => Vector3.Distance(fromPosition, t.transform.position))
+            .FirstOrDefault();
+    }
+
+    /* ==========================================================
+       ====================== STATISTIQUES ======================
+       ========================================================== */
+
+    protected void ComputeStatistics(
+        ref int nDrones,
+        ref int nTurrets,
+        ref int cumulatedHealth)
+    {
+        nDrones = m_ArmyElements.Count(e => e is Drone || e is FlyingDrone);
+        nTurrets = m_ArmyElements.Count(e => e is Turret || e is HealingTurret || e is HealingTurretStatic);
+        cumulatedHealth = (int)m_ArmyElements.OfType<ArmyElement>().Sum(e => e.Health);
+    }
+
+    /* ==========================================================
+       ===================== INITIALISATION =====================
+       ========================================================== */
+
+    public void Awake()
+    {
+        // Inscrit tous les éléments déjà présents dans la scène
+        foreach (var item in GameObject.FindGameObjectsWithTag(m_ArmyTag))
         {
-
-            return m_ArmyElements
-                .OfType<Turret>()
-                .Where(d => d != null && d != requester)  // Filter out destroyed/null
-                .Where(d =>
-                {
-                    float distance = Vector3.Distance(fromPosition, d.transform.position);
-                    return distance <= maxRange;
-                })
-                .Where(d =>
-                {
-                    Shield shield = d.GetComponent<Shield>();
-                    return shield == null || !shield.HasShield;
-                })
-                .Where(d => !requester.IsTargetTimedOut(d.transform))
-                .OrderBy(d => Vector3.Distance(fromPosition, d.transform.position))
-                .FirstOrDefault();
+            var element = item.GetComponent<IArmyElement>();
+            if (element != null && !m_ArmyElements.Contains(element))
+            {
+                element.ArmyManager = this;
+                m_ArmyElements.Add(element);
+            }
         }
-
-
-    protected void ComputeStatistics(ref int nDrones,ref int nTurrets,ref int cumulatedHealth)
-	{
-        nDrones = m_ArmyElements.Count(item => item is Drone || item is FlyingDrone);
-        nTurrets = m_ArmyElements.Count(item => item is Turret || item is HealingTurret || item is HealingTurretStatic);
-        cumulatedHealth = (int)m_ArmyElements.OfType<ArmyElement>().Sum(item => item.Health);
     }
-
-
-
-
-  public void Awake()
-  {
-      GameObject[] allArmiesElements = GameObject.FindGameObjectsWithTag(m_ArmyTag);
-
-      foreach (var item in allArmiesElements)
-      {
-          IArmyElement armyElement = item.GetComponent<IArmyElement>();
-
-          if (armyElement == null)
-          {
-              continue;
-          }
-
-          if (!m_ArmyElements.Contains(armyElement))
-                 {
-                     armyElement.ArmyManager = this;
-                     m_ArmyElements.Add(armyElement);
-                 }
-      }
-  }
 
     public virtual void Start()
     {
         RefreshHudDisplay();
     }
 
-
     protected void RefreshHudDisplay()
-	{
-        int nDrones=0, nTurrets=0, health=0;
-        ComputeStatistics(ref nDrones, ref nTurrets, ref health);
+    {
+        int d = 0, t = 0, h = 0;
+        ComputeStatistics(ref d, ref t, ref h);
 
-        m_NDronesText.text = nDrones.ToString();
-        m_NTurretsText.text = nTurrets.ToString() ;
-        m_HealthText.text = health.ToString();
+        m_NDronesText.text = d.ToString();
+        m_NTurretsText.text = t.ToString();
+        m_HealthText.text = h.ToString();
     }
 
+    /* ==========================================================
+       ======================= DESTRUCTION ======================
+       ========================================================== */
 
     public virtual void ArmyElementHasBeenKilled(GameObject go)
     {
         m_ArmyElements.Remove(go.GetComponent<IArmyElement>());
         RefreshHudDisplay();
 
-        if (m_ArmyElements.Count == 0 & m_OnArmyIsDead!=null) m_OnArmyIsDead.Invoke();
+        if (m_ArmyElements.Count == 0)
+            m_OnArmyIsDead?.Invoke();
     }
+
+    /// <summary>
+    /// Enregistre dynamiquement un nouvel élément (spawn)
+    /// </summary>
     public void RegisterArmyElement(IArmyElement element)
     {
         if (m_ArmyElements.Contains(element))
-        {
             return;
-        }
 
         element.ArmyManager = this;
         m_ArmyElements.Add(element);
-
         RefreshHudDisplay();
     }
-
-
 }
-
-
-//QUARANTINE
-/*
- *     Dictionary<GameObject, GameObject> m_DicoWhoTargetsWhom = new Dictionary<GameObject, GameObject>();
-
-        if (m_DicoWhoTargetsWhom.ContainsKey(go))
-            m_DicoWhoTargetsWhom.Remove(go);
-
-public GameObject GetRandomNonTargetedEnemy<T>() where T : ArmyElement
-{
-    var enemies = GetAllEnemiesOfType<T>(true);
-    return enemies.Where(item =>
-            !m_DicoWhoTargetsWhom.ContainsValue(item.gameObject)
-            ).FirstOrDefault()?.gameObject;
-}
-
-public GameObject LockArmyElementOnRandomNonTargetedEnemy<T>(GameObject locker) where T : ArmyElement
-{
-    GameObject rndGO = GetRandomNonTargetedEnemy<T>();
-    if (rndGO)
-    {
-        m_DicoWhoTargetsWhom[locker] = rndGO;
-    }
-    return rndGO;
-}
-
-public void UnlockArmyElement(GameObject locker)
-{
-    if (m_DicoWhoTargetsWhom.ContainsKey(locker))
-        m_DicoWhoTargetsWhom.Remove(locker);
-}
-*/
